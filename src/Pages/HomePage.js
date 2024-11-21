@@ -5,23 +5,27 @@ import Grid2 from "@mui/material/Grid2";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 
-export const HomePage = () => {
+import NavBar from "../Components/Utils/NavBar";
+
+const HomePage = () => {
   return (
     <div>
       <Box
         sx={{
-          height: "100vh",
-          p:"20px"
+          height: "calc(100vh - 40px)",
+          p: "20px",
         }}
       >
         <Box
           sx={{
             backgroundColor: "bgSoft.main",
             height: "100%",
-            borderRadius: '32px'
+            borderRadius: "32px",
             // m: "20px",
           }}
-        ></Box>
+        >
+          <NavBar />
+        </Box>
       </Box>
       {/* <Container>
         <Grid2 container>
@@ -34,3 +38,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
+export default HomePage;
