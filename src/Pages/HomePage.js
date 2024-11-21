@@ -25,6 +25,30 @@ const HomePage = () => {
           }}
         >
           <NavBar />
+          <Grid2 container>
+            <Grid2 size={6}>
+              <Box sx={{ ml: "5%", p: "6% 0 0 2%" }}>
+                <Typography
+                  variant="superTitle"
+                  fontWeight={"bold"}
+                  textAlign={"left"}
+                  sx={{
+                    textTransform: "uppercase",
+                    lineHeight: "122%",
+                  }}
+                >
+                  find your
+                  <br />
+                  fashion
+                  <br />
+                  heaven today
+                </Typography>
+              </Box>
+            </Grid2>
+            <Grid2 size={6}>
+              
+            </Grid2>
+          </Grid2>
         </Box>
       </Box>
       {/* <Container>
