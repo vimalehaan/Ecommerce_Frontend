@@ -26,27 +26,28 @@ const NavBar = () => {
         <Toolbar
           sx={{
             display: "flex",
-            justifyContent: "space-between", // Distribute items
-            paddingLeft: "16px", // Push content to the start
-            paddingRight: "16px", // Add consistent spacing
+            justifyContent: "space-between",
+            paddingLeft: "16px",
+            paddingRight: "16px",
           }}
         >
-          {/* Logo */}
-          <Typography
-            variant="h6"
-            sx={{
-              textTransform: "uppercase",
-              fontFamily: "Space Grotesk",
-              flexGrow: 1,
-              fontWeight: "bold",
-              color: "secondary.main",
-            }}
-          >
-            Glam
-            <span style={{ textTransform: "lowercase", color: "#fff" }}>
-              mod
-            </span>
-          </Typography>
+          <Box sx={{ ml: "5%" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                textTransform: "uppercase",
+                fontFamily: "Space Grotesk",
+                flexGrow: 1,
+                fontWeight: "bold",
+                color: "secondary.main",
+              }}
+            >
+              Glam
+              <span style={{ textTransform: "lowercase", color: "#fff" }}>
+                mod
+              </span>
+            </Typography>
+          </Box>
 
           {/* Navigation Links */}
           <Box sx={{ display: "flex", gap: 3 }}>
@@ -74,16 +75,10 @@ const NavBar = () => {
             >
               TESTIMONIALS
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: "#fff", cursor: "pointer", fontSize: "0.9rem" }}
-            >
-              ...
-            </Typography>
           </Box>
 
           {/* Login and Signup Buttons */}
-          <Box sx={{ ml: 3, display: "flex", gap: 2 }}>
+          <Box sx={{ ml: 3, position: "relative", display: "flex", gap: 2 }}>
             <Button sx={{ color: "#fff", textTransform: "none" }}>Login</Button>
             <Button
               variant="outlined"
@@ -93,8 +88,8 @@ const NavBar = () => {
                 borderRadius: "30px",
                 textTransform: "none",
                 "&:hover": {
-                  borderColor: "#32d3ac", // Green border on hover
-                  color: "#32d3ac",
+                  borderColor: "secondary.main", // Green border on hover
+                  color: "secondary.main",
                 },
               }}
             >
