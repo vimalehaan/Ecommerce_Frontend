@@ -66,6 +66,28 @@ let theme = createTheme({
         //         fontSize: "12px", // xs
         //     },
         // },
+        primeSuperTitle: {
+            fontFamily: "Space Grotesk",
+            fontSize: "84px",
+            color: primaryColor[2]
+        },
+        primeBigTitle: {
+            fontFamily: "Space Grotesk",
+            fontSize: "60px",
+            color: primaryColor[2],
+            fontWeight: 500
+
+        },
+        primePara1: {
+            fontFamily: "Space Grotesk",
+            fontSize: "16px",
+            fontWeight: 500
+        },
+        primePara2: {
+            fontFamily: "Space Grotesk",
+            fontSize: "23px",
+            fontWeight: 700
+        }
     }
 })
 theme = responsiveFontSizes(theme);
