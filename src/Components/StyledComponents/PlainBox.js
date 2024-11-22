@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 
-const StyledBox = ({ children, ...props }) => {
+const PlainBox = ({ children, ...props }) => {
   return (
     <Box
       sx={{
@@ -16,10 +16,6 @@ const StyledBox = ({ children, ...props }) => {
         //   backgroundColor: "bgSoft.main",
           height: "100%",
           borderRadius: "32px",
-          backgroundImage: `
-            repeating-linear-gradient(0deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px), 
-            repeating-linear-gradient(90deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px)
-          `,
           ...props.innerSx, // Allow additional styles for the inner Box
         }}
       >
@@ -29,4 +25,4 @@ const StyledBox = ({ children, ...props }) => {
   );
 };
 
-export default StyledBox;
+export default PlainBox;

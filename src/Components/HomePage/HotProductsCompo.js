@@ -49,7 +49,7 @@ const HotProductsCompo = () => {
         variant="contained"
         sx={{
           fontWeight: 600,
-          mt: "6%",
+          mt: "7%",
           borderRadius: "200px",
           height: "50px",
           width: "160px",

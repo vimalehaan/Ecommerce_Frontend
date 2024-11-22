@@ -76,7 +76,12 @@ let theme = createTheme({
             fontSize: "60px",
             color: primaryColor[2],
             fontWeight: 500
-
+        },
+        primeMedTitle: {
+            fontFamily: "Space Grotesk",
+            fontSize: "27px",
+            // color: primaryColor[2],
+            fontWeight: 700
         },
         primePara1: {
             fontFamily: "Space Grotesk",

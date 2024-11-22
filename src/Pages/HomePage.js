@@ -11,6 +11,7 @@ import LeftSideCompo from "../Components/HomePage/LeftSideCompo";
 import HotProductsCompo from "../Components/HomePage/HotProductsCompo";
 import StyledBox from "../Components/StyledComponents/CheckedBox";
 import ScrollingBar from "../Components/HomePage/ScrollingBar";
+import Footer from "../Components/Utils/Footer";
 
 const HomePage = () => {
   return (
@@ -47,6 +48,7 @@ const HomePage = () => {
       >
         <HotProductsCompo />
       </StyledBox>
+      <Footer />
     </div>
   );
 };

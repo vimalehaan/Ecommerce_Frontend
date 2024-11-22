@@ -25,11 +25,13 @@ const HomeProductCard = () => {
             boxShadow: "0px 10px 33px rgba(0, 0, 0, 0.3)",
           },
           transition: "all .3s ease-in-out",
+          
         }}
       >
         <CardMedia
-          image={dress}
+          image={tshirt}
           sx={{
+            m:"10px",
             height: "76%",
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -40,7 +42,7 @@ const HomeProductCard = () => {
         />
 
         <CardContent>
-          <Stack spacing={1} direction={"column"} sx={{ display: "flex" }}>
+          <Stack spacing={1} direction={"column"} sx={{ display: "flex", mt: -1.6 }}>
             <Box
               sx={{
                 display: "flex",
