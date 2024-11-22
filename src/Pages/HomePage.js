@@ -1,9 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
-import { Typography } from "@mui/material";
 import Grid2 from "@mui/material/Grid2";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
 
 import NavBar from "../Components/Utils/NavBar";
 import RightSideCompo from "../Components/HomePage/RightSideCompo";

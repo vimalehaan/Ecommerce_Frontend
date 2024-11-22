@@ -3,10 +3,10 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 
 import PlainBox from "../StyledComponents/PlainBox";
+import { OutlinedIconButton, FilledIconButton } from "./Buttons";
 
 import EmailIcon from "@mui/icons-material/Email";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
@@ -15,19 +15,6 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import XIcon from "@mui/icons-material/X";
-
-const IconBut = ({ icon }) => (
-  <IconButton
-    variant="outlined"
-    sx={{
-      border: "1px solid",
-      borderColor: "secondary.lighter",
-      color: "secondary.lighter",
-    }}
-  >
-    {icon}
-  </IconButton>
-);
 
 const Footer = () => {
   return (
@@ -118,7 +105,7 @@ const Footer = () => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 0.6, // Spacing between icon and text
+                      gap: 0.6,
                     }}
                   >
                     <CallIcon
@@ -141,21 +128,40 @@ const Footer = () => {
                   Social Links
                 </Typography>
                 <Stack direction={"row"} spacing={2}>
-                  <IconBut icon={<FacebookIcon />} />
-                  <IconBut icon={<InstagramIcon />} />
-                  <IconBut icon={<PinterestIcon />} />
-                  <IconBut icon={<XIcon />} />
+                  <OutlinedIconButton
+                    icon={<FacebookIcon />}
+                    color="secondary.lighter"
+                  />
+                  <OutlinedIconButton
+                    icon={<InstagramIcon />}
+                    color="secondary.lighter"
+                  />
+                  <OutlinedIconButton
+                    icon={<PinterestIcon />}
+                    color="secondary.lighter"
+                  />
+                  <OutlinedIconButton
+                    icon={<XIcon />}
+                    color="secondary.lighter"
+                  />
+                  
                 </Stack>
               </Stack>
             </Box>
           </Stack>
         </Container>
-          <Box sx={{display: 'flex', mt: '1.5%', justifyContent: 'end', pr: '2%'}}>
-            <Typography variant="primePara1" fontSize={'13px'} sx={{color: 'primary.lighter'}}>
-              &copy; {new Date().getFullYear()} Your Company Name. All rights
-              reserved.
-            </Typography>
-          </Box>
+        <Box
+          sx={{ display: "flex", mt: "1.5%", justifyContent: "end", pr: "2%" }}
+        >
+          <Typography
+            variant="primePara1"
+            fontSize={"13px"}
+            sx={{ color: "primary.lighter" }}
+          >
+            &copy; {new Date().getFullYear()} Your Company Name. All rights
+            reserved.
+          </Typography>
+        </Box>
       </PlainBox>
     </div>
   );

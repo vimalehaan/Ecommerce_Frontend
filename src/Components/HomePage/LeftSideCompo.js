@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
+import { BlackBigButton } from "../Utils/Buttons";
 
 const InfoBlock = ({ number, description }) => (
   <Stack
@@ -55,23 +56,13 @@ const LeftSideCompo = () => {
               alignItems: "start",
             }}
           >
-            <Button
-              disableElevation
-              variant="contained"
+            <BlackBigButton
+              text={"Buy Now"}
               sx={{
-                fontWeight: 600,
-                mt: "3%",
-                borderRadius: "200px",
-                height: "50px",
                 width: "23%",
-                transition: "transform 0.4s",
-                ":hover": {
-                  transform: "scale(1.05)",
-                },
+                mt: "3%",
               }}
-            >
-              Buy Now
-            </Button>
+            />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <Stack direction={"row"} spacing={8} sx={{ mt: "3%" }}>

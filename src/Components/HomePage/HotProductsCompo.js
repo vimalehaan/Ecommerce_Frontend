@@ -3,10 +3,11 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 
 // import HomeProductCard from "../Cards/HomeProductCard";
 import ProductsList from "./ProductsList";
-import Button from "@mui/material/Button";
+import { BlackBigButton } from "../Utils/Buttons";
 
 const HotProductsCompo = () => {
   return (
@@ -28,14 +29,14 @@ const HotProductsCompo = () => {
           width: "100%",
           display: "flex",
           justifyContent: "center",
-        //   border: "1px solid red",
-          mt: '2%',
+          //   border: "1px solid red",
+          mt: "2%",
         }}
       >
         <Typography
           variant="primePara1"
           fontWeight={"bold"}
-          sx={{color: 'primary.lighter', width: '90%'}}
+          sx={{ color: "primary.lighter", width: "90%" }}
         >
           Discover a fusion of trend and sophistication in our curated
           collection. From chic essentials to statement pieces, our fashion
@@ -44,23 +45,13 @@ const HotProductsCompo = () => {
         </Typography>
       </Box>
       <ProductsList />
-      <Button
-        disableElevation
-        variant="contained"
+      <BlackBigButton
+        text={"View More"}
         sx={{
-          fontWeight: 600,
           mt: "7%",
-          borderRadius: "200px",
-          height: "50px",
           width: "160px",
-          transition: "transform 0.4s",
-          ":hover": {
-            transform: "scale(1.05)",
-          },
         }}
-      >
-        View More
-      </Button>
+      />
     </Container>
   );
 };
