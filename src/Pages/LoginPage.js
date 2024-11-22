@@ -46,6 +46,7 @@ const LoginPage = () => {
           <NavBar />
           <Grid2
             container
+            px={"20px"}
             sx={{
               height: "calc(100vh - 120px)", // Full viewport height minus padding/other elements
             }}
@@ -66,49 +67,52 @@ const LoginPage = () => {
                 sx={{
                   bgcolor: "white",
                   borderRadius: "32px",
-                  height: "calc(100% - 30px)",
+                  height: "calc(100% - 60px)",
                   maxWidth: "100%",
                   display: "flex",
                   flexDirection: "column", // Stack items vertically
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "16px",
+                  justifyContent: "space-around",
+                  //   alignItems: "center",
+                  padding: "30px",
                 }}
               >
-                {/* Login Title */}
-                <Typography
-                  variant="h5"
-                  sx={{ fontWeight: "bold", marginBottom: "10px" }}
-                >
-                  Sign In
-                </Typography>
+                <Box sx={{ textAlign: "left" }}>
+                  {/* Login Title */}
+                  <Typography
+                    variant="title"
+                    sx={{ fontWeight: "bold", marginBottom: "10px" }}
+                  >
+                    Sign In
+                  </Typography>
 
-                {/* Subtitle */}
-                <Typography variant="body2" sx={{ marginBottom: "20px" }}>
-                  Please fill your details
-                </Typography>
+                  {/* Subtitle */}
+                  <Typography variant="subtitle2" sx={{ marginBottom: "20px" }}>
+                    Please fill your detail to access your account.{" "}
+                  </Typography>
+                </Box>
+                <Box>
+                  {/* Email Input */}
+                  <TextField
+                    label="Email"
+                    type="email"
+                    fullWidth
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{ marginBottom: "20px" }}
+                  />
 
-                {/* Email Input */}
-                <TextField
-                  label="Email"
-                  type="email"
-                  fullWidth
-                  variant="outlined"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  sx={{ marginBottom: "20px" }}
-                />
-
-                {/* Password Input */}
-                <TextField
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  sx={{ marginBottom: "20px" }}
-                />
+                  {/* Password Input */}
+                  <TextField
+                    label="Password"
+                    type="password"
+                    fullWidth
+                    variant="outlined"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    sx={{ marginBottom: "20px" }}
+                  />
+                </Box>
 
                 {/* Error Message */}
                 {error && (
@@ -120,11 +124,11 @@ const LoginPage = () => {
                 {/* Sign In Button */}
                 <Button
                   variant="contained"
-                  fullWidth
+                  //   fullWidth
                   sx={{
                     borderRadius: "20px",
                     padding: "10px 0",
-                    backgroundColor: "#8B29E1", // Custom color for the button
+                    backgroundColor: "primary.main", // Custom color for the button
                   }}
                   onClick={handleLogin}
                 >
@@ -146,10 +150,7 @@ const LoginPage = () => {
                 {/* Sign Up Link */}
                 <Typography sx={{ marginTop: "20px" }}>
                   Don’t have an account?{" "}
-                  <Link
-                    href="#"
-                    sx={{ textDecoration: "none", color: "#8B29E1" }}
-                  >
+                  <Link href="#" sx={{ textDecoration: "none", color: "blue" }}>
                     Sign Up
                   </Link>
                 </Typography>
