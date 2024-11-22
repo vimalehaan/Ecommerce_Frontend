@@ -49,7 +49,6 @@ const NavBar = () => {
             </Typography>
           </Box>
 
-          {/* Navigation Links */}
           <Box sx={{ display: "flex", gap: 3 }}>
             <Typography
               variant="body1"
@@ -77,7 +76,6 @@ const NavBar = () => {
             </Typography>
           </Box>
 
-          {/* Login and Signup Buttons */}
           <Box sx={{ ml: 3, position: "relative", display: "flex", gap: 2 }}>
             <Button sx={{ color: "#fff", textTransform: "none" }}>Login</Button>
             <Button
@@ -88,7 +86,7 @@ const NavBar = () => {
                 borderRadius: "30px",
                 textTransform: "none",
                 "&:hover": {
-                  borderColor: "secondary.main", // Green border on hover
+                  borderColor: "secondary.main",
                   color: "secondary.main",
                 },
               }}

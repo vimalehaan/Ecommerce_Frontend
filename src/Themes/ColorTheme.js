@@ -51,6 +51,45 @@ let theme = createTheme({
   typography: {
     // fontFamily: "'Poppins', sans-serif",
 
+        // title1: {
+        //     fontSize: '3rem',
+        // },
+        // subtitle1: {
+        //     fontSize: "18px", // lg
+        //     "@media (max-width: 1280px)": {
+        //         fontSize: "16px", // md
+        //     },
+        //     "@media (max-width: 960px)": {
+        //         fontSize: "14px", // sm
+        //     },
+        //     "@media (max-width: 600px)": {
+        //         fontSize: "12px", // xs
+        //     },
+        // },
+        primeSuperTitle: {
+            fontFamily: "Space Grotesk",
+            fontSize: "84px",
+            color: primaryColor[2]
+        },
+        primeBigTitle: {
+            fontFamily: "Space Grotesk",
+            fontSize: "60px",
+            color: primaryColor[2],
+            fontWeight: 500
+
+        },
+        primePara1: {
+            fontFamily: "Space Grotesk",
+            fontSize: "16px",
+            fontWeight: 500
+        },
+        primePara2: {
+            fontFamily: "Space Grotesk",
+            fontSize: "23px",
+            fontWeight: 700
+        }
+    }
+})
     // title1: {
     //     fontSize: '3rem',
     // },
