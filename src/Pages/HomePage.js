@@ -27,7 +27,7 @@ const HomePage = () => {
             <LeftSideCompo />
           </Grid2>
 
-          <Grid2 size={6} sx={{ p: "4%" }}>
+          <Grid2 size={6} sx={{  }}>
             <RightSideCompo />
           </Grid2>
         </Grid2>
@@ -35,11 +35,11 @@ const HomePage = () => {
       <ScrollingBar />
       <StyledBox
         sx={{
-          height: "calc(100vh - 40px)",
+          height: "750px",
         }}
         innerSx={{
           backgroundColor: "bgSoft.main",
-          height: "100%",
+
         }}
       >
         <HotProductsCompo />
