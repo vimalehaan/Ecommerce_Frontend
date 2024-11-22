@@ -50,7 +50,7 @@ const ProductDetailBox = ({ product }) => {
     >
       <Box>
         <Typography
-          variant="h5"
+          variant="title"
           sx={{ fontWeight: 600, paddingTop: "5px", fontSize: "26px" }}
         >
           {product.name}
@@ -85,7 +85,7 @@ const ProductDetailBox = ({ product }) => {
         <Grid container spacing={1}>
           <Grid item xs={4}>
             <Typography
-              variant="body2"
+              variant="subtitle2"
               sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
             >
               Price:
@@ -102,7 +102,7 @@ const ProductDetailBox = ({ product }) => {
 
           <Grid item xs={4}>
             <Typography
-              variant="body2"
+              variant="subtitle2"
               sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
             >
               Gender:
@@ -119,7 +119,24 @@ const ProductDetailBox = ({ product }) => {
 
           <Grid item xs={4}>
             <Typography
-              variant="body2"
+              variant="subtitle2"
+              sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
+            >
+              size{" "}
+            </Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography
+              variant="body1"
+              sx={{ fontWeight: 400, color: "#505050", fontSize: "15px" }}
+            >
+              M
+            </Typography>
+          </Grid>
+
+          <Grid item xs={4}>
+            <Typography
+              variant="subtitle2"
               sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
             >
               Category:
@@ -136,7 +153,7 @@ const ProductDetailBox = ({ product }) => {
 
           <Grid item xs={4}>
             <Typography
-              variant="body2"
+              variant="subtitle2"
               sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
             >
               Protection:
@@ -158,15 +175,40 @@ const ProductDetailBox = ({ product }) => {
       </Box>{" "}
       <br />
       <Stack direction="row" spacing={2}>
-        {/* <Button
+        <Button
           variant="contained"
+          color="primary"
           startIcon={<AddShoppingCartIcon />}
-          sx={{ height: "35px", width: "180px" }}
+          sx={{
+            px: "20px",
+            borderRadius: "20px",
+            backgroundColor: (theme) => theme.palette.primary.main,
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.primary.light,
+            },
+            textTransform: "none",
+          }}
         >
           Add to Cart
-        </Button> */}
-        {/* <AddToCartLongButton productId={product._id} /> */}
-        {/* <WishlistLongButton productId={product._id} /> */}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          onClick={handleSaveToggle}
+          sx={{
+            borderRadius: "20px",
+            backgroundColor: (theme) =>
+              saved ? theme.palette.error.main : theme.palette.primary.main,
+            "&:hover": {
+              backgroundColor: (theme) =>
+                saved ? theme.palette.error.dark : theme.palette.primary.light,
+            },
+            textTransform: "none",
+          }}
+        >
+          {!saved && "Add to Wishlist"}
+        </Button>
       </Stack>
     </Box>
   );

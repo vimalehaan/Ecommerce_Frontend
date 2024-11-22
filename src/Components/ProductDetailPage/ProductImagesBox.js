@@ -30,6 +30,7 @@ const ProductImagesBox = ({ images }) => {
         id="Three"
         width={500}
         height={450}
+        borderRadius={"10px"}
         sx={{ overflow: "hidden", marginBottom: "10px" }}
       >
         <img
@@ -56,6 +57,7 @@ const ProductImagesBox = ({ images }) => {
               objectFit: "cover",
               marginRight: "10px",
               cursor: "pointer",
+              borderRadius: "10px",
             }}
             onClick={() => setActiveImage(img)}
             onMouseEnter={(e) => (e.target.style.opacity = "0.7")}

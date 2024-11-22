@@ -11,10 +11,9 @@ const ProductDescriptionBox = ({ description }) => {
       width={600}
       borderRadius={1}
       sx={{
-        // border: '1px solid gray',
-        paddingLeft: "20px",
-        paddingTop: "4px",
+        p: "50px",
         boxSizing: "border-box",
+        textAlign: "left",
       }}
     >
       <Typography
@@ -29,13 +28,10 @@ const ProductDescriptionBox = ({ description }) => {
         About this Item
       </Typography>
       <Typography
-        variant="body2"
+        variant="body1"
         sx={{
           fontWeight: 500,
           paddingTop: "5px",
-          paddingLeft: "20px",
-          fontSize: "16px",
-          color: "#8B96A5",
         }}
       >
         {description}

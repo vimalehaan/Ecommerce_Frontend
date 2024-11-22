@@ -9,10 +9,11 @@ const ProductPage = () => {
   // Dummy product object
   const product = {
     _id: 1,
-    name: "Sample Product",
-    category: "dress",
+    name: "Mens Long Sleeve T-shirt Cotton Base Layer Slim Muscle",
+    category: "T-shirt",
     discount: 50,
-    description: "This is a detailed description of the sample product.",
+    description:
+      "Soft & Breathable, wicks away moisture ,FreshIQ Advanc ed Odor Protection Technology Tagless T-Shirts - no scratchy tags Lay flat collar will never lose its shape Wicks Away Moisture",
     price: 500,
     seller: "John Doe",
     pictures: [
@@ -36,6 +37,7 @@ const ProductPage = () => {
               repeating-linear-gradient(90deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px)
             `,
             backgroundSize: "100% 100%",
+            paddingBottom: "40px",
           }}
         >
           <NavBar />
@@ -67,7 +69,11 @@ const ProductPage = () => {
             </Grid2>
           </Grid2>
           <Box
-            sx={{ backgroundColor: "white", m: "40px", borderRadius: "32px" }}
+            sx={{
+              backgroundColor: "white",
+              mx: "40px",
+              borderRadius: "32px",
+            }}
           >
             <ProductDescriptionBox description={product.description} />
           </Box>
