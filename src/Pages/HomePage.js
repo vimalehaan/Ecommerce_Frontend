@@ -27,7 +27,7 @@ const HomePage = () => {
             <LeftSideCompo />
           </Grid2>
 
-          <Grid2 size={6} sx={{ p: "4%" }}>
+          <Grid2 size={6} sx={{ p: "60px" }}>
             <RightSideCompo />
           </Grid2>
         </Grid2>
