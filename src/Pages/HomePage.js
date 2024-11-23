@@ -52,16 +52,8 @@ const HomePage = () => {
           </Grid2>
         </Box>
       </Box>
-      {/* <Container>
-        <Grid2 container>
-          <Grid2
-            size={12}
-            sx={{ backgroundColor: "secondary.lighter", height: "100vh" }}
-          ></Grid2>
-        </Grid2>
-      </Container> */}
-
-
-};
+      </div>
+      );
+      };
 
 export default HomePage;

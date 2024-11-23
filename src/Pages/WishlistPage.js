@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react'
 import NavBar from '../Components/Utils/NavBar';
-import WishListCard from "../Components/WishLishCard/WishListCard"
+import WishListCard from "../Components/WishLishCard/WishListCard";
 const wishlistPage = () => {
 
          const products = [
