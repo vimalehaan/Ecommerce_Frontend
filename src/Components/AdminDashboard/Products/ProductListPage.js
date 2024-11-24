@@ -128,7 +128,7 @@ const ProductListPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={handleAddProduct}>
+          <Button variant="contained" color="primary" onClick={handleAddProduct} sx={{backgroundColor:"#76ABAE"}}>
             Add
           </Button>
         </DialogActions>
