@@ -36,7 +36,7 @@ const Dashboard_Nav_SideBar = () => {
                 sx={{
                   alignItems: "center",
                   textAlign: "center",
-                  padding: "10px 40px",
+                  padding: "20px 40px",
                   borderRadius: "20px",
                   backgroundColor: selectedKey === item ? "#5a8f91" : "#76ABAE",
                   color: "#fff",
