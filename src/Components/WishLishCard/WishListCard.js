@@ -1,17 +1,31 @@
-import React from 'react';
-import { Card, CardMedia, Typography, Button, IconButton, Box } from '@mui/material';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import React from "react";
+import {
+  Card,
+  CardMedia,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+} from "@mui/material";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-const WishlistItem = ({ image, title, details, price, onDelete, onAddToCart }) => {
+const WishlistItem = ({
+  image,
+  title,
+  details,
+  price,
+  onDelete,
+  onAddToCart,
+}) => {
   return (
     <Card
       sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
         padding: 2,
         borderRadius: 3,
-        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         maxWidth: 600,
         marginBottom: 2, // Add spacing between items if used in a list
       }}
@@ -29,12 +43,12 @@ const WishlistItem = ({ image, title, details, price, onDelete, onAddToCart }) =
       />
 
       {/* Content */}
-      <Box sx={{ flex: 2, marginLeft: 2, textAlign: 'left' }}>
-        <Typography variant="h6" component="div">
+      <Box sx={{ flex: 2, marginLeft: 2, textAlign: "left" }}>
+        <Typography variant="primePara1" component="div">
           {title}
         </Typography>
         <Typography
-          variant="body2"
+          variant="subtitle2"
           color="text.secondary"
           sx={{ marginTop: 1, marginBottom: 1 }}
         >
@@ -46,7 +60,9 @@ const WishlistItem = ({ image, title, details, price, onDelete, onAddToCart }) =
       </Box>
 
       {/* Actions */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
         <IconButton color="default" onClick={onDelete}>
           <DeleteOutlinedIcon />
         </IconButton>
@@ -55,7 +71,7 @@ const WishlistItem = ({ image, title, details, price, onDelete, onAddToCart }) =
           size="small"
           sx={{
             marginTop: 1,
-            textTransform: 'none',
+            textTransform: "none",
             borderRadius: 3,
           }}
           onClick={onAddToCart}
