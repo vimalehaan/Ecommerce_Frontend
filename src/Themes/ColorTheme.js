@@ -101,6 +101,11 @@ let theme = createTheme({
       fontSize: "12px",
       color: primaryColor[0],
     },
+    body2: {
+      fontFamily: "Noto Sans",
+      fontSize: "14px",
+      color: primaryColor[0],
+    },
   },
 });
 

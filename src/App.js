@@ -7,6 +7,7 @@ import theme from "./Themes/ColorTheme";
 import LoginPage from "./Pages/LoginPage";
 import SignUpPage from "./Pages/SignUpPage";
 import ProductPage from "./Pages/ProductPage";
+import ProductListPage from "./Pages/ProductListPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" Component={LoginPage} />
           <Route path="/signup" Component={SignUpPage} />
           <Route path="/product" Component={ProductPage} />
+          <Route path="/productlist" Component={ProductListPage} />
         </Routes>
       </div>
     </ThemeProvider>
