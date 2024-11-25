@@ -9,6 +9,7 @@ import SignUpPage from "./Pages/SignUpPage";
 import wishlistPage from "./Pages/WishlistPage";
 import ProductPage from "./Pages/ProductPage";
 import CartPage from "./Pages/CartPage";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
           <Route path="/product" Component={ProductPage} />
           <Route path="/cart" Component={CartPage} />
+          <Route path="/admin" Component={AdminDashboard} />
         </Routes>
       </div>
     </ThemeProvider>
