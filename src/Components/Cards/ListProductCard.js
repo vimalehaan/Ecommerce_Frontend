@@ -8,9 +8,8 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
+import Chip from "@mui/material/Chip";
 
-import tshirt from "../../Assets/HomePage/pngfind.com-green-shirt-png-6920524.png";
-import dress from "../../Assets/HomePage/image 9.png";
 import {
   BlackButton,
   OutlinedIconButton,
@@ -20,8 +19,9 @@ import {
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import products from "../../Data/ProductData";
 
-const ListProductCard = ({ image, title, description, price }) => {
+const ListProductCard = ({ image, title, description, price, inStock }) => {
   const [fav, setFav] = useState(false);
 
   const toggleFavorite = () => {
@@ -31,10 +31,10 @@ const ListProductCard = ({ image, title, description, price }) => {
     <Card
       elevation={"none"}
       sx={{
+        position: "relative",
         width: "270px",
         height: "400px",
         borderRadius: "20px",
-        // border: '1px solid #F7F5F7',
         cursor: "pointer",
         // "&:hover": {
         //   transform: "scale3d(1.02, 1.02, 1)",
@@ -53,20 +53,44 @@ const ListProductCard = ({ image, title, description, price }) => {
           objectFit: "contain",
           borderRadius: "20px",
           backgroundRepeat: "no-repeat",
+          position: "relative",
+          //   opacity: '20%'
+          opacity: !inStock ? 0.5 : 1,
         }}
-      />
+      >
+        {!inStock && (
+          <Chip
+            label="Out of Stock"
+            color="error.darker"
+            size="small"
+            sx={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              fontWeight: "bold",
+              backgroundColor: "error.light",
+              color: "white",
+            }}
+          />
+        )}
+      </CardMedia>
 
       <Divider />
       <CardContent sx={{ mt: "3px" }}>
         <Stack
           spacing={0.8}
           direction={"column"}
-          sx={{ height: '115px', display: "flex", mt: -1.6, justifyContent: "space-between" }}
+          sx={{
+            height: "115px",
+            display: "flex",
+            mt: -1.6,
+            justifyContent: "space-between",
+          }}
         >
           <Stack
             spacing={0.5}
             direction={"column"}
-            sx={{ display: "flex", mt: -1.6, justifyContent: "space-between",  }}
+            sx={{ display: "flex", mt: -1.6, justifyContent: "space-between" }}
           >
             <Box
               sx={{

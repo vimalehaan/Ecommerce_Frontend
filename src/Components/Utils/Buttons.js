@@ -79,3 +79,22 @@ export const BlackButton = ({ text, ...props }) => {
     </Button>
   );
 };
+
+export const OutlinedBlackButton = ({ text, ...props }) => {
+  return (
+    <Button
+      disableElevation
+      variant="outlined"
+      sx={{
+        fontWeight: 500,
+        borderRadius: "200px",
+        border: '1.2px solid',
+        textTransform: 'capitalize',
+        ...props.sx,
+      
+      }}
+    >
+      {text}
+    </Button>
+  );
+};

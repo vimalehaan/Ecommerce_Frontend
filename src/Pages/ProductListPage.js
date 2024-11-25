@@ -12,7 +12,7 @@ const ProductListPage = () => {
   return (
     <div>
       <PlainBox
-        sx={{ height: "1000px" }}
+        sx={{ height: "1100px" }}
         innerSx={{
           backgroundColor: "bgSoft.main",
         }}
