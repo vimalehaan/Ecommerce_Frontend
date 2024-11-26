@@ -2,27 +2,39 @@ import { Box, Grid2, Typography, TextField, Button, Link } from "@mui/material";
 import React, { useState } from "react";
 import NavBar from "../Components/Utils/NavBar";
 import signUpImage from "../Assets/Login/SignupImg.jpg"; // Make sure to use the right image for signup
+import { register } from "../Actions/AuthAction"; // Import register function
+import Footer from "../Components/Utils/Footer";
 
 const SignUpPage = () => {
   // State for managing form inputs
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [error, setError] = useState("");
 
   // Handle form submission
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     // Simple validation check
-    if (!email || !password || !confirmedPassword) {
+    if (!name || !username || !email || !password || !confirmedPassword) {
       setError("Please fill in all fields.");
     } else if (password !== confirmedPassword) {
       setError("Passwords do not match.");
     } else {
       setError(""); // Clear error on valid input
-      // Handle signup logic here (e.g., call an API)
-      console.log("Sign Up Successful", { email, password });
+
+      try {
+        // Call the register function with user data
+        await register({ name, username, email, password });
+        console.log("Sign Up Successful");
+        // Optionally, redirect or show a success message
+      } catch (err) {
+        console.error("Sign Up Failed", err);
+        setError("An error occurred during registration.");
+      }
     }
   };
 
@@ -30,14 +42,14 @@ const SignUpPage = () => {
     <div>
       <Box
         sx={{
-          height: "calc(100vh - 40px)", // Adjust for the padding
+          // height: "calc(100vh - 40px)", // Adjust for the padding
           p: "20px",
         }}
       >
         <Box
           sx={{
             backgroundColor: "bgSoft.main",
-            height: "100%",
+            // height: "100%",
             borderRadius: "32px",
             backgroundImage: `
               repeating-linear-gradient(0deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px), /* Horizontal lines */
@@ -50,9 +62,11 @@ const SignUpPage = () => {
           <Grid2
             container
             px={"20px"}
-            sx={{
-              height: "calc(100vh - 120px)", // Full viewport height minus padding/other elements
-            }}
+            sx={
+              {
+                // height: "calc(100vh - 120px)", // Full viewport height minus padding/other elements
+              }
+            }
           >
             {/* Left Grid (2 parts) */}
             <Grid2
@@ -93,6 +107,28 @@ const SignUpPage = () => {
                   </Typography>
                 </Box>
                 <Box>
+                  {/* Name Input */}
+                  <TextField
+                    label="Name"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    sx={{ marginBottom: "20px" }}
+                  />
+
+                  {/* Username Input */}
+                  <TextField
+                    label="Username"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    sx={{ marginBottom: "20px" }}
+                  />
+
                   {/* Email Input */}
                   <TextField
                     label="Email"
@@ -166,7 +202,7 @@ const SignUpPage = () => {
               sx={{
                 py: "30px",
                 px: "20px",
-                height: "100%",
+                // height: "120%",
                 width: "60%",
               }}
             >
@@ -194,6 +230,7 @@ const SignUpPage = () => {
           </Grid2>
         </Box>
       </Box>
+      <Footer />
     </div>
   );
 };
