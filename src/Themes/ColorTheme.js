@@ -64,8 +64,8 @@ let theme = createTheme({
       fontFamily: "Space Grotesk",
       fontSize: "27px",
       // color: primaryColor[2],
-      fontWeight: 700
-      },
+      fontWeight: 700,
+    },
     primePara1: {
       fontFamily: "Space Grotesk",
       fontSize: "16px",
@@ -88,7 +88,7 @@ let theme = createTheme({
     },
     subtitle1: {
       fontFamily: "Noto Sans",
-      fontSize: "24px",
+      fontSize: "16px",
       color: primaryColor[1],
     },
     subtitle2: {
