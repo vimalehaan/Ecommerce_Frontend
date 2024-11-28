@@ -11,22 +11,25 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import products from "../../Data/ProductData";
-import { BlackButton, OutlinedBlackButton } from "../Utils/Buttons";
-import { fontSize, height, textTransform } from "@mui/system";
+import catogary from "../../Data/CatogaryData";
+import Dropdown from "./Dropdown";
+import CategorySelector from "./DropdownCategory";
 
 const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showInStockOnly, setShowInStockOnly] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  // Filter products based on availability
+  console.log("Catooo", selectedCategories);
+  console.log("CatoooID", selectedCategories.id);
+  const itemsPerPageOptions = [4, 8, 12, 16];
+
   const filteredProducts = products.filter(
     (product) => !showInStockOnly || product.inStock
   );
-
-  const itemsPerPage = 8;
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -41,7 +44,14 @@ const ProductList = () => {
 
   return (
     <div>
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "start" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Stack
           direction={"row"}
           spacing={1}
@@ -53,17 +63,29 @@ const ProductList = () => {
                 <Checkbox
                   checked={showInStockOnly}
                   onChange={(e) => setShowInStockOnly(e.target.checked)}
+                  // color="secondary.lighter"
+                  sx={{}}
                 />
               }
               label="Show In-Stock Only"
+              sx={{
+                color: "red",
+                // Change the label text color
+              }}
             />
           </Box>
-          <OutlinedBlackButton
-            text={"Price"}
-            sx={{ height: "30px", fontSize: "13px" }}
+          <CategorySelector
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            categories={catogary}
           />
-          {/* Filter Option */}
         </Stack>
+        <Dropdown
+          label="Items Per Page"
+          selectedValue={itemsPerPage}
+          setSelectedValue={setItemsPerPage}
+          options={itemsPerPageOptions}
+        />
       </Box>
       <Grid2 container spacing={3} sx={{ justifyContent: "start", mt: "20px" }}>
         {currentProducts.map((product) => (

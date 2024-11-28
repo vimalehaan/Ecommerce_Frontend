@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import PlainBox from "../StyledComponents/PlainBox";
-import { OutlinedIconButton, FilledIconButton } from "./Buttons";
+import { OutlinedIconButton } from "./Buttons";
 
 import EmailIcon from "@mui/icons-material/Email";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
@@ -73,7 +73,7 @@ const Footer = () => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 0.6, // Spacing between icon and text
+                      gap: 0.6,
                     }}
                   >
                     <EmailIcon
@@ -87,7 +87,7 @@ const Footer = () => {
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 0.6, // Spacing between icon and text
+                      gap: 0.6,
                     }}
                   >
                     <FmdGoodIcon
@@ -144,7 +144,6 @@ const Footer = () => {
                     icon={<XIcon />}
                     color="secondary.lighter"
                   />
-                  
                 </Stack>
               </Stack>
             </Box>

@@ -10,6 +10,8 @@ import NavBar from "../Components/Utils/NavBar";
 import ProductList from "../Components/ProductListPage/ProductList";
 
 import { getProducts } from "../Actions/ProductApi";
+import Footer from "../Components/Utils/Footer";
+
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]);
@@ -51,6 +53,7 @@ const ProductListPage = () => {
           </Box>
         </Container>
       </PlainBox>
+      <Footer />
     </div>
   );
 };
