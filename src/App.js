@@ -8,6 +8,7 @@ import LoginPage from "./Pages/LoginPage";
 import SignUpPage from "./Pages/SignUpPage";
 import wishlistPage from "./Pages/WishlistPage";
 import ProductPage from "./Pages/ProductPage";
+import ProductListPage from "./Pages/ProductListPage";
 import CartPage from "./Pages/CartPage";
 import AdminDashboard from "./Pages/AdminDashboard";
 import PaymentPage from "./Pages/PaymentPage";
@@ -23,6 +24,7 @@ function App() {
           <Route path="/wishlist" Component={wishlistPage} />
 
           <Route path="/product" Component={ProductPage} />
+          <Route path="/productlist" Component={ProductListPage} />
           <Route path="/cart" Component={CartPage} />
           {/* <Route path="/payment" Component={PaymentPage} /> */}
           <Route path="/admin" Component={AdminDashboard} />
