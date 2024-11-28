@@ -8,7 +8,7 @@ import Footer from "../Components/Utils/Footer";
 const SignUpPage = () => {
   // State for managing form inputs
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
@@ -19,7 +19,7 @@ const SignUpPage = () => {
     e.preventDefault();
 
     // Simple validation check
-    if (!name || !username || !email || !password || !confirmedPassword) {
+    if (!name || !userName || !email || !password || !confirmedPassword) {
       setError("Please fill in all fields.");
     } else if (password !== confirmedPassword) {
       setError("Passwords do not match.");
@@ -27,8 +27,9 @@ const SignUpPage = () => {
       setError(""); // Clear error on valid input
 
       try {
+        console.log("use", userName);
         // Call the register function with user data
-        await register({ name, username, email, password });
+        await register({ name, userName, email, password });
         console.log("Sign Up Successful");
         // Optionally, redirect or show a success message
       } catch (err) {
@@ -124,8 +125,8 @@ const SignUpPage = () => {
                     type="text"
                     fullWidth
                     variant="outlined"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
                     sx={{ marginBottom: "20px" }}
                   />
 
