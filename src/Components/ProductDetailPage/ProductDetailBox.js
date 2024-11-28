@@ -11,6 +11,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Stack from "@mui/material/Stack";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Divider from "@mui/material/Divider";
+import AddToCartBtn from "./AddToCartBtn";
+import WishlistBtn from "./WishlistBtn";
 
 const labels = {
   0.5: "1.0",
@@ -79,7 +81,7 @@ const ProductDetailBox = ({ product }) => {
             fontSize: "15px",
           }}
         >
-          LKR {product.price - product.discount}
+          LKR {product.price}
         </Typography>
 
         <Grid container spacing={1}>
@@ -113,24 +115,7 @@ const ProductDetailBox = ({ product }) => {
               variant="body1"
               sx={{ fontWeight: 400, color: "#505050", fontSize: "15px" }}
             >
-              {product.gender}
-            </Typography>
-          </Grid>
-
-          <Grid item xs={4}>
-            <Typography
-              variant="subtitle2"
-              sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
-            >
-              size{" "}
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 400, color: "#505050", fontSize: "15px" }}
-            >
-              M
+              {/* {product.gender} */}
             </Typography>
           </Grid>
 
@@ -147,24 +132,7 @@ const ProductDetailBox = ({ product }) => {
               variant="body1"
               sx={{ fontWeight: 400, color: "#505050", fontSize: "15px" }}
             >
-              {product.category[0]}{" "}
-            </Typography>
-          </Grid>
-
-          <Grid item xs={4}>
-            <Typography
-              variant="subtitle2"
-              sx={{ fontWeight: 400, color: "#8B96A5", fontSize: "15px" }}
-            >
-              Protection:
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 400, color: "#505050", fontSize: "15px" }}
-            >
-              Refund Policy
+              {product.categoryName}{" "}
             </Typography>
           </Grid>
         </Grid>
@@ -172,43 +140,17 @@ const ProductDetailBox = ({ product }) => {
           variant="middle"
           sx={{ marginTop: "20px", marginBottom: "10px" }}
         />
+        <Typography variant="subtitle1">About this item</Typography>
+        <Typography>{product.description}</Typography>
+        <Divider
+          variant="middle"
+          sx={{ marginTop: "20px", marginBottom: "10px" }}
+        />
       </Box>{" "}
       <br />
       <Stack direction="row" spacing={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddShoppingCartIcon />}
-          sx={{
-            px: "20px",
-            borderRadius: "20px",
-            backgroundColor: (theme) => theme.palette.primary.main,
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.primary.light,
-            },
-            textTransform: "none",
-          }}
-        >
-          Add to Cart
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={saved ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-          onClick={handleSaveToggle}
-          sx={{
-            borderRadius: "20px",
-            backgroundColor: (theme) =>
-              saved ? theme.palette.error.main : theme.palette.primary.main,
-            "&:hover": {
-              backgroundColor: (theme) =>
-                saved ? theme.palette.error.dark : theme.palette.primary.light,
-            },
-            textTransform: "none",
-          }}
-        >
-          {!saved && "Add to Wishlist"}
-        </Button>
+        <AddToCartBtn />
+        <WishlistBtn productId={product.id} />
       </Stack>
     </Box>
   );

@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 
-const ProductImagesBox = ({ images }) => {
-  const [activeImg, setActiveImage] = useState(
-    images && images.length > 0 ? images[0] : ""
-  );
-
-  if (!images || images.length === 0) {
-    return null; // Return null or a placeholder component if images are not available
-  }
+const ProductImagesBox = (image) => {
+  const [activeImg, setActiveImage] = useState(image);
 
   return (
     <Box
@@ -25,7 +19,6 @@ const ProductImagesBox = ({ images }) => {
         boxSizing: "border-box",
       }}
     >
-      {/* <h4>{images}</h4> */}
       <Box
         id="Three"
         width={500}
@@ -34,13 +27,13 @@ const ProductImagesBox = ({ images }) => {
         sx={{ overflow: "hidden", marginBottom: "10px" }}
       >
         <img
-          src={activeImg}
+          src={`data:image/jpeg;base64,${image}`}
           alt="active-img"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </Box>
 
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -64,7 +57,7 @@ const ProductImagesBox = ({ images }) => {
             onMouseLeave={(e) => (e.target.style.opacity = "1")}
           />
         ))}
-      </Box>
+      </Box> */}
     </Box>
   );
 };

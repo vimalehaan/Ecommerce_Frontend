@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom"; // Import navigation hook
 import NavBar from "../Components/Utils/NavBar";
 import loginImage from "../Assets/Login/LoginImg.jpg";
 import { login } from "../Actions/AuthAction"; // Ensure correct import path
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+
   // State for managing form inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,20 +22,27 @@ const LoginPage = () => {
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    try {
-      const data = await login(email, password); // Call login API
-      console.log("Login successful:", data);
+    // Clear previous errors (if any)
+    setError(null);
 
-      // Redirect after successful login
-      if (data.token) {
-        localStorage.setItem("authToken", data.token); // Store token
-        navigate("/dashboard"); // Redirect to dashboard or desired route
+    try {
+      // Dispatch login action via Redux
+      await dispatch(login(email, password)); // The Redux thunk for login handles state updates
+
+      // Store token in localStorage for persistent authentication
+      const authToken = localStorage.getItem("authToken");
+      if (authToken) {
+        navigate("/dashboard"); // Redirect to dashboard or desired route after successful login
       } else {
-        setError("Invalid login response."); // Handle unexpected responses
+        setError("Authentication token is missing."); // Handle unexpected scenarios
       }
     } catch (error) {
       console.error("Error during login:", error);
-      setError("Login failed. Please check your credentials and try again."); // Show user-friendly error
+      // Provide a user-friendly error message
+      setError(
+        error?.message ||
+          "Login failed. Please check your credentials and try again."
+      );
     }
   };
 

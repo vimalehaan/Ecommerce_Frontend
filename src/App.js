@@ -12,8 +12,17 @@ import ProductListPage from "./Pages/ProductListPage";
 import CartPage from "./Pages/CartPage";
 import AdminDashboard from "./Pages/AdminDashboard";
 import PaymentPage from "./Pages/PaymentPage";
+import { useDispatch } from "react-redux";
+import { fetchUserId } from "./Actions/AuthAction";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch the userId when the app is loaded
+    dispatch(fetchUserId());
+  }, [dispatch]);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">

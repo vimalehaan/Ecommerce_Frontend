@@ -4,6 +4,7 @@ import NavBar from "../Components/Utils/NavBar";
 import signUpImage from "../Assets/Login/SignupImg.jpg"; // Make sure to use the right image for signup
 import { register } from "../Actions/AuthAction"; // Import register function
 import Footer from "../Components/Utils/Footer";
+import { useDispatch } from "react-redux";
 
 const SignUpPage = () => {
   // State for managing form inputs
@@ -14,6 +15,7 @@ const SignUpPage = () => {
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [error, setError] = useState("");
 
+  const dispatch = useDispatch(); // Initialize dispatch
   // Handle form submission
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -21,21 +23,25 @@ const SignUpPage = () => {
     // Simple validation check
     if (!name || !userName || !email || !password || !confirmedPassword) {
       setError("Please fill in all fields.");
-    } else if (password !== confirmedPassword) {
-      setError("Passwords do not match.");
-    } else {
-      setError(""); // Clear error on valid input
+      return;
+    }
 
-      try {
-        console.log("use", userName);
-        // Call the register function with user data
-        await register({ name, userName, email, password });
-        console.log("Sign Up Successful");
-        // Optionally, redirect or show a success message
-      } catch (err) {
-        console.error("Sign Up Failed", err);
-        setError("An error occurred during registration.");
-      }
+    if (password !== confirmedPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setError(""); // Clear error on valid input
+
+    try {
+      console.log("User details", { name, userName, email, password });
+      // Dispatch the register action with user data
+      await dispatch(register({ name, userName, email, password }));
+      console.log("Sign Up Successful");
+      // Optionally, redirect or show a success message
+    } catch (err) {
+      console.error("Sign Up Failed", err);
+      setError(err.message || "An error occurred during registration.");
     }
   };
 
