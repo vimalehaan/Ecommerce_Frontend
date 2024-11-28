@@ -8,7 +8,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
  */
 export const login = async (email, password) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,12 +37,13 @@ export const login = async (email, password) => {
  */
 export const register = async (name, userName, email, password) => {
   try {
-    console.log(API_BASE_URL);
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    console.log(API_BASE_URL); // Ensure API_BASE_URL is defined properly
+    const response = await fetch(`${API_BASE_URL}/v1/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include", // This is valid for including cookies
       body: JSON.stringify({ name, userName, email, password }), // Passing params directly
     });
 

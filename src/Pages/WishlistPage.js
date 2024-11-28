@@ -65,7 +65,12 @@ const wishlistPage = () => {
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="title" textAlign="left" mx={2}>
+            <Typography
+              variant="title"
+              textAlign="left"
+              mx={2}
+              fontWeight={"bold"}
+            >
               My Wishlist
             </Typography>
 
