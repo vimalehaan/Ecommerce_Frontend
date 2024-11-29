@@ -13,16 +13,28 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
-import axios from "axios"; 
+import axios from "axios";
 import Product from "./Product";
 
+// Function to fetch products from the backend
 const fetchProducts = async () => {
   try {
     const response = await axios.get("http://localhost:8222/api/v1/products");
     return response.data.content;
   } catch (error) {
     console.error("Error fetching products:", error);
-    return []; 
+    return [];
+  }
+};
+
+// Function to fetch categories from the backend
+const fetchCategories = async () => {
+  try {
+    const response = await axios.get("http://localhost:8222/api/v1/category");
+    return response.data; // Assuming this returns an array of categories
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
   }
 };
 
@@ -32,41 +44,70 @@ const ProductListPage = () => {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
-  const [imageURL, setImageURL] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]); // Categories state
+  const [productImage, setProductImage] = useState(null); // File object for the image
   const [productList, setProductList] = useState([]);
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Function to handle adding a new product
+  const handleAddProduct = async () => {
+    if (!category) {
+      console.error("Category ID is required.");
+      return;
+    }
 
-  const handleAddProduct = () => {
-    const newProduct = {
-      name: productName,
-      description,
-      quantity,
-      price,
-      imageURL,
-      category,
-    };
-    setProductList([...productList, newProduct]);
-    setProductName("");
-    setDescription("");
-    setQuantity("");
-    setPrice("");
-    setImageURL("");
-    setCategory("");
-    setOpen(false);
-  };
+    const formData = new FormData();
+    formData.append("name", productName);
+    formData.append("description", description);
+    formData.append("price", parseFloat(price));
+    formData.append("availableQuantity", parseInt(quantity, 10));
+    formData.append("categoryId", parseInt(category, 10));
+    if (productImage) {
+      formData.append("productImg", productImage);
+    }
 
-  useEffect(() => {
-    const getProducts = async () => {
+    try {
+      const response = await axios.post("http://localhost:8222/api/v1/products", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Product added:", response.data);
+
+      // Re-fetch the updated product list
       const fetchedProducts = await fetchProducts();
       setProductList(fetchedProducts);
+
+      // Clear form fields and close the dialog
+      setProductName("");
+      setDescription("");
+      setQuantity("");
+      setPrice("");
+      setCategory("");
+      setProductImage(null); // Reset the image
+      setOpen(false);
+    } catch (error) {
+      console.error("Error adding product:", error.response?.data || error.message);
+    }
+  };
+
+  // Fetch products and categories on component mount
+  useEffect(() => {
+    const initializeData = async () => {
+      const [fetchedProducts, fetchedCategories] = await Promise.all([
+        fetchProducts(),
+        fetchCategories(),
+      ]);
+      setProductList(fetchedProducts);
+      setCategories(fetchedCategories);
     };
 
-    getProducts();
-  }, []); 
+    initializeData();
+  }, []);
 
   return (
     <div>
@@ -114,20 +155,19 @@ const ProductListPage = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
-            <TextField
-              fullWidth
-              label="Product Image URL"
-              value={imageURL}
-              onChange={(e) => setImageURL(e.target.value)}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProductImage(e.target.files[0])}
             />
             <FormControl fullWidth>
               <InputLabel>Category</InputLabel>
               <Select value={category} onChange={(e) => setCategory(e.target.value)}>
-                <MenuItem value="Men">Men</MenuItem>
-                <MenuItem value="Women">Women</MenuItem>
-                <MenuItem value="Kids">Kids</MenuItem>
-                <MenuItem value="Accessories">Accessories</MenuItem>
-                <MenuItem value="Footwear">Footwear</MenuItem>
+                {categories.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>

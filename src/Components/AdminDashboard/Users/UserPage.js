@@ -11,33 +11,26 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import axios from "axios";
 
 const UserPage = () => {
   const [userList, setUserList] = useState([]);
 
-  // Fetch user data from API
+  // Fetch user data from API using axios
   const fetchUserData = async () => {
     try {
-      const response = await fetch("https://dummyjson.com/users");
-      const data = await response.json();
-      setUserList(data.users); // Assuming `data.users` contains the user details
+      const response = await axios.get("http://localhost:8222/api/v1/customer/getAllCustomers");
+      setUserList(response.data.users); // Assuming `response.data.users` contains the user details
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
   };
 
-  // UseEffect to fetch data on component mount
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
   // Remove user handler
   const handleRemoveUser = async (userId) => {
     try {
-      // Dummy API request for removal
-      await fetch(`https://dummyjson.com/users/${userId}`, {
-        method: "DELETE",
-      });
+      // Dummy API request for removal using axios
+      await axios.delete(`https://dummyjson.com/users/${userId}`);
 
       // Update state by filtering out the removed user
       setUserList(userList.filter((user) => user.id !== userId));
@@ -45,6 +38,11 @@ const UserPage = () => {
       console.error("Failed to delete user:", error);
     }
   };
+
+  // UseEffect to fetch data on component mount
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <div>
