@@ -3,8 +3,8 @@ import { Box, Stack, Typography, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteCartItem } from "../../Actions/CartAction"; // Import the deleteCartItem function
+import { useSelector } from "react-redux";
+import { deleteCartItem } from "../../Actions/CartAction";
 
 const CartItem = ({ CartProduct, onDelete }) => {
   const [quantity, setQuantity] = React.useState(CartProduct.quantity); // Initialize with the current quantity
@@ -73,24 +73,6 @@ const CartItem = ({ CartProduct, onDelete }) => {
       {/* Quantity & Price */}
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
-          onClick={handleIncrement}
-          sx={{
-            backgroundColor: (theme) => theme.palette.primary.main,
-            color: "white",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.primary.dark,
-            },
-            width: 20,
-            height: 20,
-            fontSize: "14px",
-          }}
-        >
-          <AddIcon fontSize="14px" />
-        </IconButton>
-        <Typography variant="body2" sx={{ fontSize: "14px" }}>
-          {quantity}
-        </Typography>
-        <IconButton
           onClick={handleDecrement}
           sx={{
             backgroundColor: (theme) => theme.palette.primary.main,
@@ -104,6 +86,24 @@ const CartItem = ({ CartProduct, onDelete }) => {
           }}
         >
           <RemoveIcon fontSize="16px" />
+        </IconButton>
+        <Typography variant="body2" sx={{ fontSize: "14px" }}>
+          {quantity}
+        </Typography>
+        <IconButton
+          onClick={handleIncrement}
+          sx={{
+            backgroundColor: (theme) => theme.palette.primary.main,
+            color: "white",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.primary.dark,
+            },
+            width: 20,
+            height: 20,
+            fontSize: "14px",
+          }}
+        >
+          <AddIcon fontSize="14px" />
         </IconButton>
       </Stack>
 

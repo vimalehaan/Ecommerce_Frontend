@@ -34,6 +34,7 @@ const authSlice = createSlice({
     },
     setUser(state, action) {
       state.user = action.payload; // This will store the user object (including userId)
+      state.isAuthenticated = true;
     },
   },
 });
