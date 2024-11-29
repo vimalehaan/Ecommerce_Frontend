@@ -1,28 +1,38 @@
 import { Box, Container, Grid2 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import NavBar from "../Components/Utils/NavBar";
 import ProductDescriptionBox from "../Components/ProductDetailPage/ProductDescriptionBox";
 import ProductImagesBox from "../Components/ProductDetailPage/ProductImagesBox";
 import ProductDetailBox from "../Components/ProductDetailPage/ProductDetailBox";
+import { fetchProductById } from "../Actions/ProductApi"; // Import the API function
+import Footer from "../Components/Utils/Footer";
 
 const ProductPage = () => {
-  // Dummy product object
-  const product = {
-    _id: 1,
-    name: "Mens Long Sleeve T-shirt Cotton Base Layer Slim Muscle",
-    category: "T-shirt",
-    discount: 50,
-    description:
-      "Soft & Breathable, wicks away moisture ,FreshIQ Advanc ed Odor Protection Technology Tagless T-Shirts - no scratchy tags Lay flat collar will never lose its shape Wicks Away Moisture",
-    price: 500,
-    seller: "John Doe",
-    pictures: [
-      "https://img.freepik.com/free-photo/front-view-young-attractive-female-colorful-coat-smiling-posing-pink-wall-model-color-female-young-girl_140725-37737.jpg?t=st=1732260684~exp=1732264284~hmac=eb3f9c1bf65511d1503840af76a01a649cfb0557e5b3c2178293d6d7d8a856ca&w=996",
-      "https://img.freepik.com/free-photo/front-view-young-attractive-female-white-t-shirt-colored-coat-posing-with-slight-smile-pink-background_140725-26042.jpg?t=st=1732260717~exp=1732264317~hmac=d093eec900c955d185ea16b9c0126735675e11ca2f356455a4eb849a7372e1d6&w=996",
-      "https://img.freepik.com/free-photo/young-girl-pointing-herself-t-shirt-jeans-looking-proud-front-view_176474-58831.jpg?t=st=1732277753~exp=1732281353~hmac=9a09cb932a6251af7357d813cbd8183e42138fede1dbfe6531eadf0262b573ba&w=996",
-      "https://img.freepik.com/free-photo/pleased-young-pretty-girl-looking-side-pointing-up-isolated-orange-wall_141793-112458.jpg?t=st=1732277815~exp=1732281415~hmac=b11129ae37d5a3fa7cbc01076969460a7a8c4d9ebcf0d5e6632ca49f6af7ad70&w=900",
-    ],
-  };
+  const [productId, setProductId] = useState(1); // Example initial product ID
+  const [product, setProduct] = useState(null); // State for product data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+
+  useEffect(() => {
+    const getProduct = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchProductById(productId);
+        setProduct(response);
+        setError(null);
+        console.log("res in PAge", response);
+      } catch (err) {
+        setError("Failed to fetch product data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProduct();
+  }, [productId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
@@ -41,7 +51,7 @@ const ProductPage = () => {
           }}
         >
           <NavBar />
-          {/* <Container sx={{ pt: 4 }}> */}
+          {/* <h6>{product.productImg}</h6> */}
           <Grid2
             container
             spacing={4}
@@ -57,7 +67,7 @@ const ProductPage = () => {
                   borderRadius: "32px",
                 }}
               >
-                <ProductImagesBox images={product.pictures} />
+                <ProductImagesBox images={product?.productImg} />
               </Box>
             </Grid2>
 
@@ -68,19 +78,18 @@ const ProductPage = () => {
               </Box>
             </Grid2>
           </Grid2>
-          <Box
+          {/* <Box
             sx={{
               backgroundColor: "white",
               mx: "40px",
               borderRadius: "32px",
             }}
           >
-            <ProductDescriptionBox description={product.description} />
-          </Box>
+            <ProductDescriptionBox description={product?.description} />
+          </Box> */}
         </Box>
-
-        {/* </Container> */}
       </Box>
+      <Footer />
     </div>
   );
 };

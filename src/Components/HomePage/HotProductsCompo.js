@@ -13,7 +13,7 @@ const HotProductsCompo = () => {
   return (
     <Container
       sx={{
-        p: "5% 0 0 0",
+        p: "30px 0 0 0",
       }}
     >
       <Typography
@@ -30,7 +30,7 @@ const HotProductsCompo = () => {
           display: "flex",
           justifyContent: "center",
           //   border: "1px solid red",
-          mt: "2%",
+          mt: "20px",
         }}
       >
         <Typography
@@ -48,7 +48,7 @@ const HotProductsCompo = () => {
       <BlackBigButton
         text={"View More"}
         sx={{
-          mt: "7%",
+          mt: "55px",
           width: "160px",
         }}
       />

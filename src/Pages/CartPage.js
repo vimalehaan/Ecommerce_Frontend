@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StyledBox from "../Components/StyledComponents/CheckedBox";
 import NavBar from "../Components/Utils/NavBar";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
@@ -6,12 +6,52 @@ import CartItem from "../Components/Cart/CartItem";
 import Footer from "../Components/Utils/Footer";
 import { BlackBigButton } from "../Components/Utils/Buttons";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { getCartItems } from "../Actions/CartAction";
+import { useSelector } from "react-redux";
 
 const CartPage = () => {
-  const [subtotal, setSubtotal] = useState(360); // Example subtotal (sum of items' prices)
-  const shippingCost = 20; // Fixed shipping cost
-  const discount = 50; // Example discount
-  const total = subtotal + shippingCost - discount; // Calculate total
+  const shipping = 0; // Dynamic shipping cost
+  const userId = useSelector((state) => state.auth.user); // Get userId from Redux
+  const [cartProducts, setCartProducts] = useState([]); // State to hold cart items
+  const [subtotal, setSubtotal] = useState(0); // Subtotal calculated dynamically
+  const [total, setTotal] = useState(0); // Total calculated dynamically
+  const [changed, setChanged] = useState(0); // Total calculated dynamically
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (userId) {
+        try {
+          const response = await getCartItems(userId); // Call the function
+          console.log(response);
+          setCartProducts(response); // Update the state with cart items
+        } catch (error) {
+          console.error("Failed to fetch cart items:", error);
+        }
+      }
+    };
+
+    fetchCartItems(); // Invoke the function inside useEffect
+  }, [userId, changed]); // Dependency on userId
+
+  useEffect(() => {
+    if (cartProducts.length === 0) {
+      setSubtotal(0);
+      setTotal(0);
+    } else {
+      let newSubtotal = 0;
+      cartProducts.forEach((product) => {
+        newSubtotal += product.productPrice * product.quantity; // Assuming `quantity` is in the product object
+      });
+
+      const newTotal = newSubtotal + shipping; // Calculate total
+      setSubtotal(newSubtotal);
+      setTotal(newTotal);
+    }
+  }, [cartProducts]); // Recalculate when cartProducts changes
+
+  const onDelete = () => {
+    setChanged(changed + 1);
+  };
 
   return (
     <div>
@@ -39,17 +79,32 @@ const CartPage = () => {
               justifyContent: "space-between",
             }}
           >
-            <Typography variant="title" textAlign="left" mx={2}>
+            <Typography
+              variant="title"
+              textAlign="left"
+              mx={2}
+              fontWeight={"bold"}
+            >
               Cart
             </Typography>
 
             <Divider sx={{ my: 2 }} />
-            {/* Cart Items */}
+
+            {/* Map over cartProducts and pass to CartItem */}
             <Box>
-              <CartItem />
-              <CartItem />
-              <CartItem />
+              {cartProducts && cartProducts.length > 0 ? (
+                cartProducts.map((product) => (
+                  <CartItem
+                    key={product.id}
+                    CartProduct={product}
+                    onDelete={onDelete}
+                  />
+                ))
+              ) : (
+                <h6>No products in the cart.</h6>
+              )}
             </Box>
+
             {/* Summary Section */}
             <Box sx={{ mt: 4, px: 2 }}>
               <Divider sx={{ my: 2 }} />
@@ -76,22 +131,10 @@ const CartPage = () => {
                     Shipping
                   </Typography>
                   <Typography variant="body1" align="right" sx={{ flex: 0.5 }}>
-                    ${shippingCost.toFixed(2)}
+                    ${shipping.toFixed(2)}
                   </Typography>
                 </Stack>
-                {/* Discounts */}
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ width: "100%" }}
-                >
-                  <Typography variant="body1" align="right" sx={{ flex: 1 }}>
-                    Discount
-                  </Typography>
-                  <Typography variant="body1" align="right" sx={{ flex: 0.5 }}>
-                    -${discount.toFixed(2)}
-                  </Typography>
-                </Stack>
+
                 <Divider sx={{ my: 2, width: "100%" }} />
                 {/* Total */}
                 <Stack
