@@ -11,25 +11,55 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SortIcon from "@mui/icons-material/Sort";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-import products from "../../Data/ProductData";
-import catogary from "../../Data/CatogaryData";
+
 import Dropdown from "./Dropdown";
 import CategorySelector from "./DropdownCategory";
+import DropdownSort from "./DropdownSort";
 
-const ProductList = () => {
+const ProductList = ({ products, categories }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showInStockOnly, setShowInStockOnly] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedSort, setSelectedSort] = useState(0);
 
-  console.log("Catooo", selectedCategories);
-  console.log("CatoooID", selectedCategories.id);
-  const itemsPerPageOptions = [4, 8, 12, 16];
+  // const itemsPerPageOptions = [4, 8, 12, 16];
+  const itemsPerPageOptions = [
+    {id: 4, name: "4 itemps per page"},
+    {id: 8, name: "8 itemps per page"},
+    {id: 12, name: "12 itemps per page"},
+    {id: 16, name: "16 itemps per page"},
+  ];
+  const sortOptions = [
+    { id: 0, name: "None" },
+    { id: 1, name: "Price: Low to High" },
+    { id: 2, name: "Price: High to Low" },
+  ];
 
-  const filteredProducts = products.filter(
-    (product) => !showInStockOnly || product.inStock
-  );
+  const sortedProducts = [...products].sort((a, b) => {
+    if (selectedSort === 1) {
+      return a.price - b.price;
+    } else if (selectedSort === 2) {
+      return b.price - a.price;
+    }
+    return 0;
+  });
+
+  const filteredProducts = sortedProducts.filter((product) => {
+    const selectedCategoryIds = selectedCategories.map(
+      (category) => category.id
+    );
+    const matchesCategory =
+      selectedCategoryIds.length === 0 ||
+      selectedCategoryIds.includes(product.categoryId);
+
+    const matchesStock = !showInStockOnly || product.availableQuantity > 0;
+
+    return matchesCategory && matchesStock;
+  });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -38,10 +68,17 @@ const ProductList = () => {
     startIndex,
     startIndex + itemsPerPage
   );
+
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
+  console.log("Pro", products[1].categoryId);
+  console.log("Cat", selectedCategories);
   return (
     <div>
       <Box
@@ -49,7 +86,7 @@ const ProductList = () => {
           width: "100%",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "space-around",
         }}
       >
         <Stack
@@ -63,7 +100,6 @@ const ProductList = () => {
                 <Checkbox
                   checked={showInStockOnly}
                   onChange={(e) => setShowInStockOnly(e.target.checked)}
-                  sx={{}}
                 />
               }
               label="Show In-Stock Only"
@@ -72,28 +108,42 @@ const ProductList = () => {
               }}
             />
           </Box>
+          <DropdownSort
+            sortOptions={sortOptions}
+            selectedSort={selectedSort}
+            setSelectedSort={setSelectedSort}
+            icon={<SortIcon fontSize="small" sx={{ ml: "-6px" }} />}
+          />
           <CategorySelector
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
-            categories={catogary}
+            categories={categories}
           />
         </Stack>
-        <Dropdown
+        {/* <Dropdown
           label="Items Per Page"
           selectedValue={itemsPerPage}
           setSelectedValue={setItemsPerPage}
           options={itemsPerPageOptions}
+        /> */}
+        <DropdownSort
+          sortOptions={itemsPerPageOptions}
+          selectedSort={itemsPerPage}
+          setSelectedSort={setItemsPerPage}
+          icon={<ArrowDropDownIcon fontSize="small" sx={{ ml: "-10px" }} />}
+
         />
       </Box>
       <Grid2 container spacing={3} sx={{ justifyContent: "start", mt: "20px" }}>
         {currentProducts.map((product) => (
-          <Grid2 lg={3}>
+          <Grid2 lg={3} key={product.id}>
             <ListProductCard
-              image={product.image}
-              title={product.title}
+              id={product.id}
+              image={product.productImg}
+              title={product.name}
               description={product.description}
               price={product.price}
-              inStock={product.inStock}
+              availableQuantity={product.availableQuantity} // Pass availableQuantity
             />
           </Grid2>
         ))}
@@ -102,10 +152,11 @@ const ProductList = () => {
             width: "100%",
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
             mt: "20px",
           }}
         >
-          <Stack spacing={2}>
+          <Stack spacing={2} sx={{ pb: "27px" }}>
             <Pagination
               count={totalPages}
               page={currentPage}
