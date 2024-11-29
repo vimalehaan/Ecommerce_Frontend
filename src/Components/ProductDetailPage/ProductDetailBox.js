@@ -149,7 +149,7 @@ const ProductDetailBox = ({ product }) => {
       </Box>{" "}
       <br />
       <Stack direction="row" spacing={2}>
-        <AddToCartBtn />
+        <AddToCartBtn productId={product.id} />
         <WishlistBtn productId={product.id} />
       </Stack>
     </Box>

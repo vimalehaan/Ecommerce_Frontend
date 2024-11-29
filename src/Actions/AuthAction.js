@@ -65,7 +65,7 @@ export const register = (userDetails) => async (dispatch) => {
 };
 
 // Function to get the token from cookies
-const getTokenFromCookies = () => {
+export const getTokenFromCookies = () => {
   const cookieString = document.cookie;
   const cookies = cookieString.split("; ").reduce((acc, cookie) => {
     const [name, value] = cookie.split("=");
@@ -79,16 +79,14 @@ const getTokenFromCookies = () => {
 export const fetchUserId = () => async (dispatch) => {
   try {
     const AccessToken = getTokenFromCookies(); // Assuming token is stored in localStorage
-    console.log("Tokkkkennn", AccessToken);
-    const response = await axios.get(
-      "http://localhost:8222/api/v1/auth/getUserIdFromToken",
+    const response = await axios.post(
+      `${baseIp}/api/v1/auth/getUserIdFromToken`,
       {
         token: AccessToken,
       }
     );
-    console.log(response);
     // Assuming the response contains user data with userId
-    const user = { userId: response.data.userId };
+    const user = response.data;
 
     dispatch(setUser(user));
   } catch (error) {

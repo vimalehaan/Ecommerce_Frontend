@@ -9,7 +9,7 @@ import { fetchProductById } from "../Actions/ProductApi"; // Import the API func
 import Footer from "../Components/Utils/Footer";
 
 const ProductPage = () => {
-  const [productId, setProductId] = useState(2); // Example initial product ID
+  const [productId, setProductId] = useState(1); // Example initial product ID
   const [product, setProduct] = useState(null); // State for product data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
