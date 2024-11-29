@@ -54,7 +54,7 @@ const ListProductCard = ({
         borderRadius: "20px",
         cursor: "pointer",
       }}
-      // onClick={handleCardClick}
+      onClick={handleCardClick}
     >
       <CardMedia
         image={image[0]}
