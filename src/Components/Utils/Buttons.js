@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 export const OutlinedIconButton = ({ icon, color, height, ...props }) => (
   <IconButton
     variant="outlined"
-    
     sx={{
       border: "1.5px solid",
       borderColor: color,
@@ -88,10 +87,10 @@ export const OutlinedBlackButton = ({ text, ...props }) => {
       sx={{
         fontWeight: 500,
         borderRadius: "200px",
-        border: '1.2px solid',
-        textTransform: 'capitalize',
+        border: "1.2px solid",
+        textTransform: "capitalize",
         ...props.sx,
-      
+        fontFamily: "Noto Sans",
       }}
     >
       {text}
