@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { baseIp } from "../Server";
 
 import Container from "@mui/material/Container";
-import Grid2 from "@mui/material/Grid2";
 import Box from "@mui/material/Box";
 
 import PlainBox from "../Components/StyledComponents/PlainBox";
@@ -10,6 +8,8 @@ import NavBar from "../Components/Utils/NavBar";
 import ProductList from "../Components/ProductListPage/ProductList";
 
 import { getProducts } from "../Actions/ProductApi";
+import Footer from "../Components/Utils/Footer";
+
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]);
@@ -51,6 +51,7 @@ const ProductListPage = () => {
           </Box>
         </Container>
       </PlainBox>
+      <Footer />
     </div>
   );
 };
