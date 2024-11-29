@@ -79,7 +79,7 @@ const CategorySelector = ({
         sx={{
           ".MuiMenu-paper": {
             width: "150px",
-            backgroundColor: "rgba(255, 255, 255, 0.8)", // Set background opacity
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
             backdropFilter: "blur(5px)",
           },
         }}
@@ -90,15 +90,15 @@ const CategorySelector = ({
             onClick={() => handleAddCategory(category)}
             sx={{
               backgroundColor: selectedCategories.includes(category)
-                ? "primary.main" 
-                : "transparent", 
+                ? "primary.main"
+                : "transparent",
               color: selectedCategories.includes(category)
                 ? "white"
-                : "inherit", 
+                : "inherit",
               "&:hover": {
                 backgroundColor: selectedCategories.includes(category)
                   ? "primary.dark"
-                  : "rgba(0, 0, 0, 0.1)", 
+                  : "rgba(0, 0, 0, 0.1)",
               },
             }}
           >

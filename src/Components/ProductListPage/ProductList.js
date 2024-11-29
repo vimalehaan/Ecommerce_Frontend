@@ -63,14 +63,12 @@ const ProductList = () => {
                 <Checkbox
                   checked={showInStockOnly}
                   onChange={(e) => setShowInStockOnly(e.target.checked)}
-                  // color="secondary.lighter"
                   sx={{}}
                 />
               }
               label="Show In-Stock Only"
               sx={{
                 color: "red",
-                // Change the label text color
               }}
             />
           </Box>
