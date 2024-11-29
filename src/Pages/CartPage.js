@@ -70,21 +70,16 @@ const CartPage = () => {
           <Box
             sx={{
               backgroundColor: "white",
-              minHeight: "80%",
+              minHeight: "80vh",
               my: "40px",
               borderRadius: "32px",
               display: "flex",
               flexDirection: "column",
-              padding: "16px",
+              padding: "30px",
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              variant="title"
-              textAlign="left"
-              mx={2}
-              fontWeight={"bold"}
-            >
+            <Typography variant="title" textAlign="left" fontWeight={"bold"}>
               Cart
             </Typography>
 

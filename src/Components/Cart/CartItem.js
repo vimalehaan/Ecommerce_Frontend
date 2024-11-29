@@ -73,24 +73,6 @@ const CartItem = ({ CartProduct, onDelete }) => {
       {/* Quantity & Price */}
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton
-          onClick={handleIncrement}
-          sx={{
-            backgroundColor: (theme) => theme.palette.primary.main,
-            color: "white",
-            "&:hover": {
-              backgroundColor: (theme) => theme.palette.primary.dark,
-            },
-            width: 20,
-            height: 20,
-            fontSize: "14px",
-          }}
-        >
-          <AddIcon fontSize="14px" />
-        </IconButton>
-        <Typography variant="body2" sx={{ fontSize: "14px" }}>
-          {quantity}
-        </Typography>
-        <IconButton
           onClick={handleDecrement}
           sx={{
             backgroundColor: (theme) => theme.palette.primary.main,
@@ -104,6 +86,24 @@ const CartItem = ({ CartProduct, onDelete }) => {
           }}
         >
           <RemoveIcon fontSize="16px" />
+        </IconButton>
+        <Typography variant="body2" sx={{ fontSize: "14px" }}>
+          {quantity}
+        </Typography>
+        <IconButton
+          onClick={handleIncrement}
+          sx={{
+            backgroundColor: (theme) => theme.palette.primary.main,
+            color: "white",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.primary.dark,
+            },
+            width: 20,
+            height: 20,
+            fontSize: "14px",
+          }}
+        >
+          <AddIcon fontSize="14px" />
         </IconButton>
       </Stack>
 
