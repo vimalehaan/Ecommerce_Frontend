@@ -13,7 +13,8 @@ const RightSideCompo = () => {
   return (
     <Box
       sx={{
-        position: "relative",
+        // position: "relative",
+        p: "6.5vh 60px 0 60px "
       }}
     >
       <Stack spacing={3} direction={"row"}>
@@ -27,7 +28,7 @@ const RightSideCompo = () => {
         >
           <Typography
             sx={{
-              mt: "30%",
+              mt: "11vh",
               color: "primary.main",
             }}
           >
@@ -38,7 +39,7 @@ const RightSideCompo = () => {
             fontSize={"23px"}
             sx={{
               color: "primary.main",
-              mt: "5%",
+              mt: "120px",
             }}
           >
             Fashion Award
@@ -68,10 +69,10 @@ const RightSideCompo = () => {
             position: "absolute",
             backgroundColor: "bgSoft.main",
             backgroundSize: "cover",
-            height: 242,
-            width: 242,
+            height: '27vh',
+            width: '27vh',
             borderRadius: "50%",
-            top: "50%",
+            // top: "50%",
             transform: "translateY(-50%)",
           }}
         ></Box>
@@ -79,8 +80,8 @@ const RightSideCompo = () => {
           sx={{
             position: "absolute",
             width: "100%",
-            height: "160px",
-            mt: "5%",
+            height: "19vh",
+            mt: "3vh",
             border: "1.2px solid",
             borderWidth: "1.2px 1.2px 0 1.2px",
             borderColor: "primary.lighter",
@@ -107,8 +108,8 @@ const RightSideCompo = () => {
               position: "absolute",
               display: "flex",
               alignItems: "center",
-              bottom: "-18%",
-              left: "4%",
+              bottom: "-3.5vh",
+              left: "20px",
               height: "70px",
               width: "150px",
               background: "#d9d0ff",
@@ -128,8 +129,8 @@ const RightSideCompo = () => {
           <Box
             sx={{
               position: "absolute",
-              bottom: "-18%",
-              right: "4%",
+              bottom: "-3.5vh",
+              right: "20px",
               display: "flex",
               alignItems: "center",
               height: "70px",
@@ -154,10 +155,10 @@ const RightSideCompo = () => {
             position: "absolute",
             backgroundColor: "bgSoft.main",
             backgroundSize: "cover",
-            height: 225,
-            width: 225,
+            height: '25.2vh',
+            width: '25.2vh',
             borderRadius: "50%",
-            top: "50%",
+            // top: "50%",
             transform: "translateY(-50%)",
             border: "1px solid",
             borderColor: "primary.lighter",
@@ -169,10 +170,10 @@ const RightSideCompo = () => {
             position: "absolute",
             backgroundImage: `url(${qualityImage})`,
             backgroundSize: "cover",
-            height: 210,
-            width: 210,
+            height: '23.3vh',
+            width: '23.3vh',
             borderRadius: "50%",
-            top: "50%",
+            // top: "1vh",
             transform: "translateY(-50%)",
             borderColor: "bgSoft.main",
           }}

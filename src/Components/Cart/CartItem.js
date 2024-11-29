@@ -3,13 +3,29 @@ import { Box, Stack, Typography, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteCartItem } from "../../Actions/CartAction"; // Import the deleteCartItem function
 
-const CartItem = () => {
-  const [quantity, setQuantity] = React.useState(1);
+const CartItem = ({ CartProduct, onDelete }) => {
+  const [quantity, setQuantity] = React.useState(CartProduct.quantity); // Initialize with the current quantity
 
   // Handlers for incrementing and decrementing quantity
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () => setQuantity((prev) => Math.max(1, prev - 1));
+
+  const userId = useSelector((state) => state.auth.user); // Get userId from Redux
+
+  // Handle delete action
+  const handleDelete = async () => {
+    try {
+      await deleteCartItem(userId, CartProduct.productId); // Pass userId and productId to the deleteCartItem function
+      console.log("Item deleted successfully");
+      // setChanged(changed + 1);
+      onDelete();
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+    }
+  };
 
   return (
     <Box
@@ -36,7 +52,6 @@ const CartItem = () => {
           borderRadius: "8px",
         }}
       />
-
       {/* Product Details */}
       <Stack
         spacing={1}
@@ -48,10 +63,10 @@ const CartItem = () => {
         }}
       >
         <Typography variant="h6" fontWeight="bold">
-          Nike
+          {CartProduct.productName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Air Max Sneakers
+          {CartProduct.productDescription}
         </Typography>
       </Stack>
 
@@ -94,18 +109,19 @@ const CartItem = () => {
 
       <Stack direction={"column"} sx={{ alignItems: "flex-end" }}>
         {/* Price */}
-        <Typography variant="h6" fontWeight="bold">
-          $120
+        <Typography variant="h6" fontWeight="semibold">
+          ${CartProduct.productPrice}
         </Typography>
       </Stack>
 
+      {/* Delete Icon */}
       <IconButton
         sx={{
           color: "error.light",
           width: 24,
           height: 24,
         }}
-        onClick={() => console.log("Remove item")}
+        onClick={handleDelete} // Call handleDelete when clicked
       >
         <DeleteOutlineIcon sx={{ fontSize: "20px" }} />
       </IconButton>

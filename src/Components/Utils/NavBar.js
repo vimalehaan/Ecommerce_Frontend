@@ -17,10 +17,13 @@ const NavBar = () => {
         position="static"
         elevation={0}
         sx={{
+          display: "flex",
+          justifyContent: "center",
           width: "95%",
           backgroundColor: "primary.darker",
           borderRadius: "80px",
           mt: "25px",
+          height: "7vh",
         }}
       >
         <Toolbar
