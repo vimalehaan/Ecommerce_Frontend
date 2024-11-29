@@ -1,25 +1,48 @@
-import { Box, Grid2, Typography, TextField, Button, Link } from "@mui/material";
+import { Box, Grid, Typography, TextField, Button, Link } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import navigation hook
 import NavBar from "../Components/Utils/NavBar";
 import loginImage from "../Assets/Login/LoginImg.jpg";
+import { login } from "../Actions/AuthAction"; // Ensure correct import path
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+
   // State for managing form inputs
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // Initialize navigation hook
 
-  // Handle form submission
-  const handleLogin = (e) => {
-    e.preventDefault();
+  /**
+   * Handles the login form submission
+   * @param {Event} event - The form submission event
+   */
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
 
-    // Simple validation check
-    if (!email || !password) {
-      setError("Please fill in both fields.");
-    } else {
-      setError(""); // Clear error on valid input
-      // Handle login logic here (e.g., call an API)
-      console.log("Login Successful", { email, password });
+    // Clear previous errors (if any)
+    setError(null);
+
+    try {
+      // Dispatch login action via Redux
+      await dispatch(login(email, password)); // The Redux thunk for login handles state updates
+
+      // Store token in localStorage for persistent authentication
+      const authToken = localStorage.getItem("authToken");
+      if (authToken) {
+        navigate("/dashboard"); // Redirect to dashboard or desired route after successful login
+      } else {
+        setError("Authentication token is missing."); // Handle unexpected scenarios
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      // Provide a user-friendly error message
+      setError(
+        error?.message ||
+          "Login failed. Please check your credentials and try again."
+      );
     }
   };
 
@@ -27,7 +50,7 @@ const LoginPage = () => {
     <div>
       <Box
         sx={{
-          height: "calc(100vh - 40px)", // Adjust for the padding
+          height: "calc(100vh - 40px)", // Adjust for padding
           p: "20px",
         }}
       >
@@ -37,14 +60,14 @@ const LoginPage = () => {
             height: "100%",
             borderRadius: "32px",
             backgroundImage: `
-              repeating-linear-gradient(0deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px), /* Horizontal lines */
-              repeating-linear-gradient(90deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px) /* Vertical lines */
+              repeating-linear-gradient(0deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px),
+              repeating-linear-gradient(90deg, transparent, transparent 148px, rgba(255, 255, 255, 1) 150px)
             `,
             backgroundSize: "100% 100%", // Ensure lines span the whole box
           }}
         >
           <NavBar />
-          <Grid2
+          <Grid
             container
             px={"20px"}
             sx={{
@@ -52,9 +75,9 @@ const LoginPage = () => {
             }}
           >
             {/* Left Grid (2 parts) */}
-            <Grid2
+            <Grid
               item
-              lg={4} // 4/12 = 2/5 of the total width
+              lg={4}
               md={4}
               sm={12} // Full width on small screens for better responsiveness
               sx={{
@@ -72,14 +95,13 @@ const LoginPage = () => {
                   display: "flex",
                   flexDirection: "column", // Stack items vertically
                   justifyContent: "space-around",
-                  //   alignItems: "center",
                   padding: "30px",
                 }}
               >
                 <Box sx={{ textAlign: "left" }}>
                   {/* Login Title */}
                   <Typography
-                    variant="title"
+                    variant="h4"
                     sx={{ fontWeight: "bold", marginBottom: "10px" }}
                   >
                     Sign In
@@ -87,7 +109,7 @@ const LoginPage = () => {
 
                   {/* Subtitle */}
                   <Typography variant="subtitle2" sx={{ marginBottom: "20px" }}>
-                    Please fill your detail to access your account.{" "}
+                    Please fill in your details to access your account.
                   </Typography>
                 </Box>
                 <Box>
@@ -124,11 +146,11 @@ const LoginPage = () => {
                 {/* Sign In Button */}
                 <Button
                   variant="contained"
-                  //   fullWidth
+                  fullWidth
                   sx={{
                     borderRadius: "20px",
                     padding: "10px 0",
-                    backgroundColor: "primary.main", // Custom color for the button
+                    backgroundColor: "primary.main",
                   }}
                   onClick={handleLogin}
                 >
@@ -155,12 +177,12 @@ const LoginPage = () => {
                   </Link>
                 </Typography>
               </Box>
-            </Grid2>
+            </Grid>
 
             {/* Right Grid (3 parts) */}
-            <Grid2
+            <Grid
               item
-              lg={8} // 8/12 = 3/5 of the total width
+              lg={8}
               md={8}
               sm={12} // Full width on small screens for better responsiveness
               sx={{
@@ -175,8 +197,8 @@ const LoginPage = () => {
                   height: "100%",
                   overflow: "hidden",
                   display: "flex",
-                  justifyContent: "center", // Center the image horizontally
-                  alignItems: "center", // Center the image vertically
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <img
@@ -184,14 +206,14 @@ const LoginPage = () => {
                   alt="Login"
                   style={{
                     height: "100%",
-                    width: "100%", // This allows width to adjust proportionally
-                    objectFit: "cover", // Maintains aspect ratio while fitting in the box
-                    borderRadius: "100px 5px 100px 5px", // Custom border radius
+                    width: "100%",
+                    objectFit: "cover",
+                    borderRadius: "100px 5px 100px 5px",
                   }}
                 />
               </Box>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </div>

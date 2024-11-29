@@ -8,13 +8,12 @@ import HomeProductCard from "../Cards/HomeProductCard";
 const ProductsList = () => {
   return (
     <Container sx={{
-        // border: '1px solid red',
-        mt: '5%'
+        mt: '50px'
     }}>
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between", // Distribute space evenly
+          justifyContent: "space-around", // Distribute space evenly
           flexWrap: "wrap", // Ensure responsiveness
         }}
       >
