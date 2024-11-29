@@ -57,6 +57,7 @@ export const BlackBigButton = ({ text, ...props }) => {
         },
         ...props.sx,
       }}
+      onClick={props.onClick}
     >
       {text}
     </Button>
@@ -92,6 +93,7 @@ export const OutlinedBlackButton = ({ text, ...props }) => {
         ...props.sx,
         fontFamily: "Noto Sans",
       }}
+      onClick={props.onClick}
     >
       {text}
     </Button>
