@@ -193,7 +193,10 @@ const SignUpPage = () => {
                 {/* Already have an account Link */}
                 <Typography sx={{ marginTop: "20px" }}>
                   Already have an account?{" "}
-                  <Link href="#" sx={{ textDecoration: "none", color: "blue" }}>
+                  <Link
+                    href="/login"
+                    sx={{ textDecoration: "none", color: "blue" }}
+                  >
                     Sign In
                   </Link>
                 </Typography>

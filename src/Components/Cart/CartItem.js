@@ -3,8 +3,8 @@ import { Box, Stack, Typography, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useSelector, useDispatch } from "react-redux";
-import { deleteCartItem } from "../../Actions/CartAction"; // Import the deleteCartItem function
+import { useSelector } from "react-redux";
+import { deleteCartItem } from "../../Actions/CartAction";
 
 const CartItem = ({ CartProduct, onDelete }) => {
   const [quantity, setQuantity] = React.useState(CartProduct.quantity); // Initialize with the current quantity
