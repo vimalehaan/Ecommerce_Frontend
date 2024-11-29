@@ -5,6 +5,7 @@ import Select from "@mui/material/Select";
 
 const Dropdown = ({ label, selectedValue, setSelectedValue, options }) => {
   console.log("count", selectedValue);
+  
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
@@ -18,16 +19,16 @@ const Dropdown = ({ label, selectedValue, setSelectedValue, options }) => {
         "& .MuiOutlinedInput-root": {
           height: "30px",
           borderRadius: "200px",
-          borderWidth: "1.5px",
+          borderWidth: "0px",
           "& fieldset": {
-            borderWidth: "1.2px",
+            borderWidth: "0px",
             borderColor: "black",
           },
           "&:hover fieldset": {
-            borderWidth: "1.2px",
+            borderWidth: "0px",
           },
           "&.Mui-focused fieldset": {
-            borderWidth: "1.2px",
+            borderWidth: "0px",
           },
         },
       }}

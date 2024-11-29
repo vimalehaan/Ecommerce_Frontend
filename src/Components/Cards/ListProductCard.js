@@ -1,32 +1,49 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 
 import {
-  BlackButton,
+  BlackBigButton,
   OutlinedIconButton,
   FilledIconButton,
-  BlackBigButton,
 } from "../Utils/Buttons";
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import products from "../../Data/ProductData";
 
-const ListProductCard = ({ image, title, description, price, inStock }) => {
+const ListProductCard = ({
+  id,
+  image,
+  title,
+  description,
+  price,
+  availableQuantity,
+}) => {
   const [fav, setFav] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const toggleFavorite = () => {
-    setFav((prev) => !prev); // Toggle the `fav` state
+    setFav((prev) => !prev);
   };
+
+  const isInStock = availableQuantity > 0; // Determine stock status
+
+  const handleCardClick = () => {
+    navigate(`/product/${id}`); // Redirect to the product details page
+  };
+
+  const handleAddCartClick = () => {
+    console.log("Hello cart");
+  };
+
   return (
     <Card
       elevation={"none"}
@@ -36,15 +53,11 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
         height: "400px",
         borderRadius: "20px",
         cursor: "pointer",
-        // "&:hover": {
-        //   transform: "scale3d(1.02, 1.02, 1)",
-        //   boxShadow: "0px 10px 33px rgba(0, 0, 0, 0.3)",
-        // },
-        // transition: "all .3s ease-in-out",
       }}
+      onClick={handleCardClick}
     >
       <CardMedia
-        image={image}
+        image={image[0]}
         sx={{
           m: "20px",
           height: "220px",
@@ -53,15 +66,12 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
           objectFit: "contain",
           borderRadius: "20px",
           backgroundRepeat: "no-repeat",
-          position: "relative",
-          //   opacity: '20%'
-          opacity: !inStock ? 0.5 : 1,
+          opacity: isInStock ? 1 : 0.5, // Set opacity based on stock status
         }}
       >
-        {!inStock && (
+        {!isInStock && (
           <Chip
             label="Out of Stock"
-            color="error.darker"
             size="small"
             sx={{
               position: "absolute",
@@ -76,7 +86,7 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
       </CardMedia>
 
       <Divider />
-      <CardContent sx={{ mt: "3px" }}>
+      <CardContent sx={{ mt: "3px", position: "relative" }}>
         <Stack
           spacing={0.8}
           direction={"column"}
@@ -87,47 +97,39 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
             justifyContent: "space-between",
           }}
         >
-          <Stack
-            spacing={0.5}
-            direction={"column"}
-            sx={{ display: "flex", mt: -1.6, justifyContent: "space-between" }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "start",
+              width: "100%",
+            }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "start",
-                //   border: "2px solid red",
-                width: "100%",
-              }}
-            >
-              <Stack direction={"column"} spacing={0.2}>
-                <Typography
-                  variant="body1"
-                  //   textTransform={"uppercase"}
-                  fontWeight={500}
-                  textAlign={"start"}
-                  sx={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "normal",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {title}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  color="primary.darker"
-                  textAlign={"left"}
-                  fontWeight={600}
-                >
-                  {description}
-                </Typography>
-              </Stack>
-            </Box>
-          </Stack>
+            <Stack direction={"column"} spacing={0.2}>
+              <Typography
+                variant="body1"
+                fontWeight={500}
+                textAlign={"start"}
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "normal",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {title}
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                color="primary.darker"
+                textAlign={"left"}
+                fontWeight={600}
+              >
+                {description}
+              </Typography>
+            </Stack>
+          </Box>
 
           <Box
             sx={{
@@ -142,14 +144,16 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
               textAlign={"start"}
               fontWeight={600}
             >
-              {price}
+              LKR {price}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <Stack direction={"row"} spacing={1}>
               <BlackBigButton
-                text="Add to Cart"
+                onClick={handleAddCartClick}
+                text={isInStock ? "Add to Cart" : "Notify Me"}
                 sx={{ height: "30px", fontSize: "11px" }}
+                disabled={!isInStock} // Disable button if out of stock
               />
               {fav ? (
                 <FilledIconButton
@@ -178,7 +182,6 @@ const ListProductCard = ({ image, title, description, price, inStock }) => {
           </Box>
         </Stack>
       </CardContent>
-      {/* </CardActionArea> */}
     </Card>
   );
 };

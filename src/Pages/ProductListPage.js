@@ -8,11 +8,12 @@ import NavBar from "../Components/Utils/NavBar";
 import ProductList from "../Components/ProductListPage/ProductList";
 
 import { getProducts } from "../Actions/ProductApi";
+import { getCategories } from "../Actions/CategoryAction";
 import Footer from "../Components/Utils/Footer";
-
 
 const ProductListPage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,27 +28,41 @@ const ProductListPage = () => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+        // setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
     fetchProducts();
+    fetchCategories();
   }, []);
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  console.log("lehan", products);
-  
+  console.log("Products", products);
+  console.log("Categories", categories);
+
   return (
     <div>
       <PlainBox
-        sx={{ height: "1100px" }}
+        sx={{ minHeight: "100vh" }}
         innerSx={{
           backgroundColor: "bgSoft.main",
+          minHeight: "100vh",
         }}
       >
         <NavBar />
         <Container sx={{ pt: "20px" }}>
           <Box sx={{ width: "100%" }}>
-            <ProductList />
+            <ProductList products={products.content} categories={categories} />
           </Box>
         </Container>
       </PlainBox>
