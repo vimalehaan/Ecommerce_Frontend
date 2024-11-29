@@ -88,7 +88,7 @@ const OrderPage = () => {
                       </div>
                     ))}
                   </TableCell>
-                  <TableCell>${order.total}</TableCell>
+                  <TableCell>LKR {order.total}</TableCell>
                   <TableCell>
                     <FormControl size="small">
                       <Select
@@ -113,7 +113,7 @@ const OrderPage = () => {
                         )
                       }
                     >
-                      Cancel Order
+                      Cancel
                     </Button>
                   </TableCell>
                 </TableRow>

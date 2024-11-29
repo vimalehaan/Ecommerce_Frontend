@@ -13,13 +13,17 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
+import axios from "axios"; 
 import Product from "./Product";
 
-// Fetch product data from the dummy API
 const fetchProducts = async () => {
-  const response = await fetch("https://dummyjson.com/products");
-  const data = await response.json();
-  return data.products.slice(0, 5); // Fetch a limited number of products for demo
+  try {
+    const response = await axios.get("http://localhost:8222/api/v1/products");
+    return response.data.content;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return []; 
+  }
 };
 
 const ProductListPage = () => {
@@ -32,11 +36,10 @@ const ProductListPage = () => {
   const [category, setCategory] = useState("");
   const [productList, setProductList] = useState([]);
 
-  // Open/close dialog handlers
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Add product to the list
+
   const handleAddProduct = () => {
     const newProduct = {
       name: productName,
@@ -56,7 +59,6 @@ const ProductListPage = () => {
     setOpen(false);
   };
 
-  // Fetch products when the component is mounted
   useEffect(() => {
     const getProducts = async () => {
       const fetchedProducts = await fetchProducts();
@@ -64,18 +66,22 @@ const ProductListPage = () => {
     };
 
     getProducts();
-  }, []); // Empty dependency array to fetch data only once
+  }, []); 
 
   return (
     <div>
       <Typography variant="h4" gutterBottom>
         Product List
       </Typography>
-      <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ backgroundColor: "#76ABAE" }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+        sx={{ backgroundColor: "#76ABAE" }}
+      >
         Add Product
       </Button>
 
-      {/* Dialog for adding a product */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Product</DialogTitle>
         <DialogContent>
@@ -128,13 +134,17 @@ const ProductListPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={handleAddProduct} sx={{backgroundColor:"#76ABAE"}}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddProduct}
+            sx={{ backgroundColor: "#76ABAE" }}
+          >
             Add
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Displaying the list of products */}
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: "16px", marginTop: "20px" }}>
         {productList.map((product, index) => (
           <Product key={index} product={product} />
