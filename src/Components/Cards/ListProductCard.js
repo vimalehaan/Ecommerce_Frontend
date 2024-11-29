@@ -150,7 +150,11 @@ const ListProductCard = ({
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <Stack direction={"row"} spacing={1}>
               <BlackBigButton
-                onClick={handleAddCartClick}
+                // onClick={handleAddCartClick}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleAddCartClick();
+                }}
                 text={isInStock ? "Add to Cart" : "Notify Me"}
                 sx={{ height: "30px", fontSize: "11px" }}
                 disabled={!isInStock} // Disable button if out of stock
@@ -167,7 +171,10 @@ const ListProductCard = ({
                       backgroundColor: (theme) => theme.palette.error.dark,
                     },
                   }}
-                  onClick={toggleFavorite}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleFavorite();
+                  }}
                 />
               ) : (
                 <OutlinedIconButton
@@ -175,7 +182,10 @@ const ListProductCard = ({
                   color={"error.main"}
                   height={"30px"}
                   sx={{ fontSize: "11px" }}
-                  onClick={toggleFavorite}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleFavorite();
+                  }}
                 />
               )}
             </Stack>
