@@ -157,3 +157,41 @@ export const logoutAction = () => (dispatch) => {
   // Dispatch logout action to update state
   dispatch(logout());
 };
+
+export const getUserById = async (userId) => {
+  const token = getTokenFromCookies();
+  try {
+    const response = await axios.get(`${baseIp}/api/v1/customer/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add token in the header
+      },
+    });
+    console.log("le", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    throw error;
+  }
+};
+
+export const updateUserAddress = async (userId, address) => {
+  const token = getTokenFromCookies();
+  console.log(userId)
+  console.log(address)
+  console.log(token)
+  try {
+    const response = await axios.patch(
+      `${baseIp}/api/v1/customer/customerAddress/${userId}`, 
+      { houseNo: address.houseNo },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add token in the header
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user address:", error);
+    throw error;
+  }
+};
