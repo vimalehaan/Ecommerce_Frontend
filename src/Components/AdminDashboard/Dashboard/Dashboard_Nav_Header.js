@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { ArrowDropDownCircleOutlined, Logout } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard_Nav_Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -25,6 +27,8 @@ const Dashboard_Nav_Header = () => {
   };
 
   const handleLogout = () => {
+    document.cookie = `authToken=; path=/; max-age=0; secure`;
+    navigate("/");
     handleMenuClose();
   };
   return (
@@ -77,13 +81,17 @@ const Dashboard_Nav_Header = () => {
               <Box
                 sx={{ display: "flex", alignItems: "center", padding: "0 5px" }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", padding: "0 5px" }} >
-                <Avatar />
-                <Typography sx={{ ml: 1 }}>Admin</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "0 5px",
+                  }}
+                >
+                  <Avatar />
+                  <Typography sx={{ ml: 1 }}>Admin</Typography>
                 </Box>
-               
-                
-                
+
                 <IconButton onClick={handleMenuOpen}>
                   <ArrowDropDownCircleOutlined />
                 </IconButton>
