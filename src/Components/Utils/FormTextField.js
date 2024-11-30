@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, TextField } from "@mui/material";
 
-const FormTextField = ({ label, textFieldProps, sx = {} }) => {
+const FormTextField = ({ label, textFieldProps, sx = {},  ...props }) => {
   return (
     <Box
     //   direction={"row"}
@@ -17,6 +17,9 @@ const FormTextField = ({ label, textFieldProps, sx = {} }) => {
       <TextField
         id={label.toLowerCase().replace(/\s+/g, "-")}
         label={label}
+        name= {props.name}
+        defaultValue={props.defaultValue}
+        onChange={props.onChange}
         // color="secondary.dark"
         //  variant="filled"
         // variant="standard"
