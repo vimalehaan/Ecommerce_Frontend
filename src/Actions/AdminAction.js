@@ -109,15 +109,9 @@ export const updateProduct = async (payload) => {
 export const handleAlert = async () => {
   try {
     const response = await getProducts(); 
-    console.log("response",response.content);
-    const lowStockProducts = response.content.filter(product => product.availableQuantity < 5);
-
-    console.log("lowStockProducts",lowStockProducts);
-    if (lowStockProducts.length > 0) {
-      const productNames = lowStockProducts.map(product => product.name).join(', ');
-      const alertMessage = `Warning: The following products have less than 5 items in stock: ${productNames}. Please check.`;
-      alert(alertMessage);
-    } 
+    const lowStockProducts = response.content.filter(product => product.availableQuantity < 10);
+  return lowStockProducts;
+    
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }

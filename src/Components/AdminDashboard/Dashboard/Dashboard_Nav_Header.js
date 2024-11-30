@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
@@ -12,9 +12,25 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { ArrowDropDownCircleOutlined, Logout } from "@mui/icons-material";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { handleAlert } from "../../../Actions/AdminAction";
 
 const Dashboard_Nav_Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [stockAlert, setStockAlert] = useState(false);
+
+  const handleStockAlert = async () => {
+    try {
+      const res = await handleAlert();
+      if (res.length > 0) {
+        setStockAlert(true);
+      } else {
+        setStockAlert(false);
+      }
+    } catch (error) {
+      console.error("Error fetching stock alert:", error.message);
+    }
+  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,7 +42,13 @@ const Dashboard_Nav_Header = () => {
 
   const handleLogout = () => {
     handleMenuClose();
+    // Add logout functionality here
   };
+
+  useEffect(() => {
+    handleStockAlert();
+  }, []);
+
   return (
     <div>
       <Container>
@@ -73,17 +95,14 @@ const Dashboard_Nav_Header = () => {
               }}
               gap={2}
             >
-              <NotificationsIcon sx={{ color: "gray" }} />
-              <Box
-                sx={{ display: "flex", alignItems: "center", padding: "0 5px" }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", padding: "0 5px" }} >
+              {stockAlert ? (
+                <NotificationsActiveIcon sx={{ color: "red" }} />
+              ) : (
+                <NotificationsIcon sx={{ color: "gray" }} />
+              )}
+              <Box sx={{ display: "flex", alignItems: "center", padding: "0 5px" }}>
                 <Avatar />
                 <Typography sx={{ ml: 1 }}>Admin</Typography>
-                </Box>
-               
-                
-                
                 <IconButton onClick={handleMenuOpen}>
                   <ArrowDropDownCircleOutlined />
                 </IconButton>
