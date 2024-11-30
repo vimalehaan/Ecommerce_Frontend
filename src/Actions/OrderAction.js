@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { getTokenFromCookies } from "./AuthAction";
 import { deleteCartItem } from "./CartAction";
 
+
 export const createPaymentIntent = async (
   amount,
   currency,
