@@ -1,6 +1,6 @@
-import { Box, Container, Grid2 } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useParams } from "react-router-dom"; // Import useParams hook
 import NavBar from "../Components/Utils/NavBar";
 import ProductDescriptionBox from "../Components/ProductDetailPage/ProductDescriptionBox";
 import ProductImagesBox from "../Components/ProductDetailPage/ProductImagesBox";
@@ -9,7 +9,7 @@ import { fetchProductById } from "../Actions/ProductApi"; // Import the API func
 import Footer from "../Components/Utils/Footer";
 
 const ProductPage = () => {
-  const [productId, setProductId] = useState(1); // Example initial product ID
+  const { productId } = useParams(); // Get productId from URL
   const [product, setProduct] = useState(null); // State for product data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -18,10 +18,10 @@ const ProductPage = () => {
     const getProduct = async () => {
       setLoading(true);
       try {
-        const response = await fetchProductById(productId);
+        const response = await fetchProductById(productId); // Fetch product using the dynamic productId
         setProduct(response);
         setError(null);
-        console.log("res in PAge", response);
+        console.log("res in Page", response);
       } catch (err) {
         setError("Failed to fetch product data");
       } finally {
@@ -29,7 +29,7 @@ const ProductPage = () => {
       }
     };
     getProduct();
-  }, [productId]);
+  }, [productId]); // Trigger re-fetch if productId changes
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -51,7 +51,6 @@ const ProductPage = () => {
           }}
         >
           <NavBar />
-          {/* <h6>{product.productImg}</h6> */}
           <Grid2
             container
             spacing={4}
@@ -61,12 +60,7 @@ const ProductPage = () => {
           >
             {/* Left Section: Images */}
             <Grid2 item xs={12} md={6} lg={6}>
-              <Box
-                sx={{
-                  m: "20px",
-                  borderRadius: "32px",
-                }}
-              >
+              <Box sx={{ m: "20px", borderRadius: "32px" }}>
                 <ProductImagesBox images={product?.productImg} />
               </Box>
             </Grid2>
@@ -78,15 +72,6 @@ const ProductPage = () => {
               </Box>
             </Grid2>
           </Grid2>
-          {/* <Box
-            sx={{
-              backgroundColor: "white",
-              mx: "40px",
-              borderRadius: "32px",
-            }}
-          >
-            <ProductDescriptionBox description={product?.description} />
-          </Box> */}
         </Box>
       </Box>
       <Footer />

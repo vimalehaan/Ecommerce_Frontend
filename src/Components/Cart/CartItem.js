@@ -1,19 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector } from "react-redux";
-import { deleteCartItem } from "../../Actions/CartAction";
+import { addToCart, deleteCartItem } from "../../Actions/CartAction";
 
-const CartItem = ({ CartProduct, onDelete }) => {
+const CartItem = ({ CartProduct, onDelete, onQuantityChange }) => {
   const [quantity, setQuantity] = React.useState(CartProduct.quantity); // Initialize with the current quantity
 
   // Handlers for incrementing and decrementing quantity
-  const handleIncrement = () => setQuantity((prev) => prev + 1);
+  const handleIncrement = () => {
+    setQuantity((prev) => prev + 1);
+  };
   const handleDecrement = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   const userId = useSelector((state) => state.auth.user); // Get userId from Redux
+
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        console.log("USS", userId);
+        const updatedCart = await addToCart(
+          CartProduct.productId,
+          CartProduct.quantity,
+          userId
+        );
+        console.log("Updated cart details:", updatedCart);
+      } catch (error) {
+        console.error("Failed to update cart quantity:", error.message);
+      }
+    };
+
+    if (quantity !== undefined) {
+      updateCart(); // Call the async function
+      onQuantityChange();
+    }
+  }, [quantity, CartProduct.productId, userId]); // Add all relevant dependencies
 
   // Handle delete action
   const handleDelete = async () => {
@@ -43,7 +66,7 @@ const CartItem = ({ CartProduct, onDelete }) => {
       {/* Product Image */}
       <Box
         component="img"
-        src="https://img.freepik.com/free-photo/handsome-man-wearing-bomber-jacket_176474-50013.jpg?t=st=1732303502~exp=1732307102~hmac=43ba7c4d428cac627d6c742ad002092370ecfdc1598ede43c6e74407f1c73608&w=996" // Replace with your product image URL
+        src={CartProduct.productImg[0]}
         alt="Product"
         sx={{
           width: 100,

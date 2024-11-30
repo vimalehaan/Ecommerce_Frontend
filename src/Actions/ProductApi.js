@@ -3,7 +3,13 @@ import { baseIp } from "../Server";
 
 export const getProducts = async () => {
   try {
-    const response = await axios.get(`${baseIp}/api/v1/products`);
+    const token = getTokenFromCookies();
+
+    const response = await axios.get(`${baseIp}/api/v1/products`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add token in the header
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching products:", error);

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Typography,
   Box,
-  Grid,
   Paper,
   CircularProgress,
   Divider,
@@ -16,6 +15,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import axios from "axios";
+import Category from "./Category";
+import { fetchAllCustomers, getOrders } from "../../../Actions/AdminAction";
+import { getProducts } from "../../../Actions/ProductApi";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -24,36 +27,35 @@ const DashboardPage = () => {
     totalUsers: 0,
     totalProducts: 0,
     totalOrders: 0,
-    totalRevenue: 0,
+   totalRevenue: 0,
   });
 
   const [loading, setLoading] = useState(true);
 
-  // Fetch metrics data
+  // Fetch metrics data using Axios
   const fetchMetrics = async () => {
     try {
       const [usersRes, productsRes, ordersRes] = await Promise.all([
-        fetch("https://dummyjson.com/users"),
-        fetch("https://dummyjson.com/products"),
-        fetch("https://dummyjson.com/carts"),
+        fetchAllCustomers(),
+        getProducts(),
+        getOrders(),
       ]);
-
-      const usersData = await usersRes.json();
-      const productsData = await productsRes.json();
-      const ordersData = await ordersRes.json();
-
-      // Calculate total revenue
-      const totalRevenue = ordersData.carts.reduce(
-        (sum, cart) => sum + cart.total,
-        0
-      );
-
+console.log(ordersRes);
+      const usersData = usersRes;
+      const productsData = productsRes.content;
+      const ordersData = ordersRes;
+      // const totalRevenue = ordersData.carts.reduce(
+      //   (sum, cart) => sum + cart.total,
+      //   0
+      // );
       setMetrics({
-        totalUsers: usersData.users.length,
-        totalProducts: productsData.products.length,
-        totalOrders: ordersData.carts.length,
-        totalRevenue,
+        totalUsers: usersData.length,
+        totalProducts: productsData.length,
+        totalOrders: ordersData.length,
+        
+        // totalRevenue,
       });
+    
     } catch (error) {
       console.error("Failed to fetch dashboard metrics:", error);
     } finally {
@@ -62,12 +64,12 @@ const DashboardPage = () => {
   };
 
   useEffect(() => {
-    fetchMetrics();
+    fetchMetrics(); // Fetch metrics when the component mounts
   }, []);
 
   // Bar chart data
   const chartData = {
-    labels: ["Users", "Products", "Orders", "Revenue"],
+    labels: ["Users", "Products", "Orders"],
     datasets: [
       {
         label: "Dashboard Metrics",
@@ -94,74 +96,78 @@ const DashboardPage = () => {
         </Box>
       ) : (
         <>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  textAlign: "center",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="h6">Total Users</Typography>
-                <Typography variant="h5" color="primary">
-                  {metrics.totalUsers}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  textAlign: "center",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="h6">Total Products</Typography>
-                <Typography variant="h5" color="secondary">
-                  {metrics.totalProducts}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  textAlign: "center",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="h6">Total Orders</Typography>
-                <Typography variant="h5" color="success">
-                  {metrics.totalOrders}
-                </Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  textAlign: "center",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="h6">Total Revenue</Typography>
-                <Typography variant="h5" color="error">
-                  ${metrics.totalRevenue}
-                </Typography>
-              </Paper>
-            </Grid>
-          </Grid>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Paper
+              sx={{
+                p: 2,
+                textAlign: "center",
+                backgroundColor: "#f3f4f6",
+                borderRadius: 2,
+                flex: "1 1 100px",
+              }}
+            >
+              <Typography variant="h6">Total Users</Typography>
+              <Typography variant="h5" color="primary">
+                {metrics.totalUsers}
+              </Typography>
+            </Paper>
 
-          <Box mt={4}>
-            <Typography variant="h6" gutterBottom>
-              Metrics Overview
-            </Typography>
-            <Bar data={chartData} />
+            <Paper
+              sx={{
+                p: 2,
+                textAlign: "center",
+                backgroundColor: "#f3f4f6",
+                borderRadius: 2,
+                flex: "1 1 100px",
+              }}
+            >
+              <Typography variant="h6">Total Products</Typography>
+              <Typography variant="h5" color="secondary">
+                {metrics.totalProducts}
+              </Typography>
+            </Paper>
+
+            <Paper
+              sx={{
+                p: 2,
+                textAlign: "center",
+                backgroundColor: "#f3f4f6",
+                borderRadius: 2,
+                flex: "1 1 100px",
+              }}
+            >
+              <Typography variant="h6">Total Orders</Typography>
+              <Typography variant="h5" color="success">
+                {metrics.totalOrders}
+              </Typography>
+            </Paper>
+
+            <Paper
+              sx={{
+                p: 2,
+                textAlign: "center",
+                backgroundColor: "#f3f4f6",
+                borderRadius: 2,
+                flex: "1 1 100px",
+              }}
+            >
+              <Typography variant="h6">Total Revenue</Typography>
+              <Typography variant="h5" color="error">
+                ${metrics.totalRevenue}
+              </Typography>
+            </Paper>
+          </Box>
+          <Box >
+            <Box mt={4} sx={{ width: "55vw" }}>
+              <Typography variant="h6" gutterBottom>
+                Metrics Overview
+              </Typography>
+              <Bar data={chartData} />
+            </Box>
+
+            <Box mt={4} sx={{ width: "55vw" }}>
+              <Category /> 
+            </Box>
           </Box>
         </>
       )}

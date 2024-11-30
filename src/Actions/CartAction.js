@@ -1,12 +1,12 @@
 import axios from "axios";
-import { getTokenFromCookies } from "./AuthAction"; // Import token function
 import { baseIp } from "../Server"; // Base API URL
+import { getTokenFromCookies } from "./AuthAction";
 // **Add to Cart**
 export const addToCart = async (productId, quantity, userId) => {
   try {
-    // console.log(productId, quantity, userId);
+    console.log(productId, quantity, userId);
     const token = getTokenFromCookies(); // Get token from cookies
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     // Send data as query parameters
     const response = await axios.post(
@@ -20,7 +20,7 @@ export const addToCart = async (productId, quantity, userId) => {
       }
     );
 
-    console.log("Item added to cart:", response.data);
+    console.log("Item added to cart:", response);
     return response.data; // Return response if needed
   } catch (error) {
     console.error(
@@ -71,6 +71,32 @@ export const deleteCartItem = async (userId, productId) => {
   } catch (error) {
     console.error(
       "Error deleting cart item:",
+      error.response?.data || error.message
+    );
+    throw error; // Rethrow error for further handling
+  }
+};
+
+// **Update Cart Item Quantity**
+export const updateCartQuantity = async (productId, quantity, userId) => {
+  try {
+    const token = getTokenFromCookies(); // Get token from cookies
+    console.log(productId, quantity, userId);
+    const response = await axios.patch(
+      `${baseIp}/api/v1/cart/updateCartQuantity/${productId}/${quantity}/${userId}`,
+      {}, // PUT requests generally require a body, even if empty
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add token in the header
+        },
+      }
+    );
+
+    console.log("Cart item quantity updated:", response.data);
+    return response.data; // Return response if needed
+  } catch (error) {
+    console.error(
+      "Error updating cart item quantity:",
       error.response?.data || error.message
     );
     throw error; // Rethrow error for further handling

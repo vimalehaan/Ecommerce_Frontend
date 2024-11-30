@@ -8,7 +8,7 @@ import NavBar from "../Components/Utils/NavBar";
 import ProductList from "../Components/ProductListPage/ProductList";
 
 import { getProducts } from "../Actions/ProductApi";
-import { getCategories } from "../Actions/CategoryAction";
+import { fetchAllCategories } from "../Actions/CategoryAction";
 import Footer from "../Components/Utils/Footer";
 
 const ProductListPage = () => {
@@ -30,7 +30,7 @@ const ProductListPage = () => {
 
     const fetchCategories = async () => {
       try {
-        const data = await getCategories();
+        const data = await fetchAllCategories();
         setCategories(data);
         // setLoading(false);
       } catch (error) {

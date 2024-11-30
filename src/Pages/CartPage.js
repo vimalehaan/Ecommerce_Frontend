@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import StyledBox from "../Components/StyledComponents/CheckedBox";
 import NavBar from "../Components/Utils/NavBar";
-import { Box, Container, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import CartItem from "../Components/Cart/CartItem";
 import Footer from "../Components/Utils/Footer";
 import { BlackBigButton } from "../Components/Utils/Buttons";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { getCartItems } from "../Actions/CartAction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setSelectedCartItems } from "../Reducers/cartSlice";
 
 const CartPage = () => {
   const shipping = 0; // Dynamic shipping cost
@@ -16,6 +26,12 @@ const CartPage = () => {
   const [subtotal, setSubtotal] = useState(0); // Subtotal calculated dynamically
   const [total, setTotal] = useState(0); // Total calculated dynamically
   const [changed, setChanged] = useState(0); // Total calculated dynamically
+  const [selectedItems, setSelectedItems] = useState([]); // Store selected items for checkout
+  const selectedCartItems = useSelector(
+    (state) => state.cart.selectedCartItems
+  ); // Get selected Cart Items from Redux
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -31,6 +47,7 @@ const CartPage = () => {
     };
 
     fetchCartItems(); // Invoke the function inside useEffect
+    setSelectedItems(selectedCartItems);
   }, [userId, changed]); // Dependency on userId
 
   useEffect(() => {
@@ -47,11 +64,36 @@ const CartPage = () => {
       setSubtotal(newSubtotal);
       setTotal(newTotal);
     }
-  }, [cartProducts]); // Recalculate when cartProducts changes
+  }, [cartProducts, changed]); // Recalculate when cartProducts changes
 
   const onDelete = () => {
     setChanged(changed + 1);
   };
+
+  const handleSelectionChange = (productId) => {
+    setSelectedItems((prevSelectedItems) => {
+      // If the item is already selected, remove it (uncheck)
+      if (prevSelectedItems.includes(productId)) {
+        return prevSelectedItems.filter((id) => id !== productId);
+      } else {
+        // If not selected, add it to the selected list (check)
+        return [...prevSelectedItems, productId];
+      }
+    });
+  };
+
+  const handleProceed = () => {
+    console.log(selectedItems);
+    if (selectedItems && selectedItems.length > 0) {
+      dispatch(setSelectedCartItems(selectedItems));
+      navigate("/shipping");
+    } else {
+      alert("Please Select atleast one Product to Checkout");
+    }
+  };
+
+  // Check if any item is selected
+  const isCheckoutDisabled = selectedItems.length === 0;
 
   return (
     <div>
@@ -89,11 +131,29 @@ const CartPage = () => {
             <Box>
               {cartProducts && cartProducts.length > 0 ? (
                 cartProducts.map((product) => (
-                  <CartItem
-                    key={product.id}
-                    CartProduct={product}
-                    onDelete={onDelete}
-                  />
+                  <Box
+                    key={product.productId}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={selectedItems.includes(product.productId)}
+                          onChange={() =>
+                            handleSelectionChange(product.productId)
+                          } // Handle selection toggle
+                          value={product.productId}
+                        />
+                      }
+                      label={
+                        <CartItem
+                          CartProduct={product}
+                          onDelete={onDelete}
+                          onQuantityChange={onDelete}
+                        />
+                      }
+                    />
+                  </Box>
                 ))
               ) : (
                 <h6>No products in the cart.</h6>
@@ -160,6 +220,7 @@ const CartPage = () => {
               sx={{ mt: 4, display: "flex", justifyContent: "flex-end", px: 4 }}
             >
               <BlackBigButton
+                onClick={handleProceed}
                 text={
                   <Box display="flex" alignItems="center">
                     Proceed To Checkout
@@ -167,6 +228,7 @@ const CartPage = () => {
                   </Box>
                 }
                 sx={{ width: "250px", marginBottom: "40px" }}
+                disabled={isCheckoutDisabled} // Disable button if no items selected
               />
             </Box>
           </Box>
