@@ -77,26 +77,36 @@ const OrderPage = () => {
             </TableHead>
             <TableBody>
               {orders &&
+                orders.length > 0 && // Check for orders existence and length
                 orders.map((order) => (
                   <TableRow key={order.id}>
                     <TableCell>{order.id}</TableCell>
-                    <TableCell>{order.userId}</TableCell>
+                    <TableCell>{order.shippingDetails.fullName}</TableCell>
                     <TableCell>{new Date().toLocaleDateString()}</TableCell>
                     <TableCell>
-                      {order.products.map((item) => (
-                        <div key={item.id}>
-                          {item.title} (x{item.quantity})
-                        </div>
-                      ))}
+                      {order &&
+                        order.length > 0 &&
+                        order.products.map((item) => (
+                          <div key={item.id}>
+                            {item.title} (x{item.quantity})
+                          </div>
+                        ))}
                     </TableCell>
-                    <TableCell>LKR {order.total}</TableCell>
+                    <TableCell>LKR {order.totalAmount}</TableCell>
                     <TableCell>
                       <FormControl size="small">
                         <Select
                           value={order.status || "Pending"}
-                          //</FormControl>onChange={(e) =>
-                          // handleStatusChange(order.id, e.target.value)
-                          // }
+                          onChange={(e) => {
+                            const updatedStatus = e.target.value;
+                            setOrders((prevOrders) =>
+                              prevOrders.map((o) =>
+                                o.id === order.id
+                                  ? { ...o, status: updatedStatus }
+                                  : o
+                              )
+                            );
+                          }}
                         >
                           <MenuItem value="Pending">Pending</MenuItem>
                           <MenuItem value="Shipped">Shipped</MenuItem>
