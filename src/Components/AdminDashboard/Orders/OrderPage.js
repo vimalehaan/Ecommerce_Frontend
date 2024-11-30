@@ -14,16 +14,17 @@ import {
   MenuItem,
   FormControl,
 } from "@mui/material";
+import { getOrders } from "../../../Actions/AdminAction";
 
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
 
-  // Fetch orders data
+ 
   const fetchOrders = async () => {
     try {
-      const response = await fetch("https://dummyjson.com/carts");
-      const data = await response.json();
-      setOrders(data.carts); // Assuming `data.carts` contains order details
+      const response = await getOrders();
+      // console.log("g",response);
+      setOrders(response); 
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     }

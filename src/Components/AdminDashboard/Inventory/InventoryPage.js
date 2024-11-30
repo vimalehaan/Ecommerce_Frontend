@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import axios from 'axios';
+import { getProducts } from '../../../Actions/ProductApi';
 
 const InventoryPage = () => {
   const [productList, setProductList] = useState([]);
-
-  // Fetch product data from API
   const fetchProductData = async () => {
     try {
-      const response = await axios.get('http://localhost:8222/api/v1/products');
-      const data = response.data; 
-      setProductList(data.content || []);
+      const response = await getProducts();
+      const data = response.content; 
+      setProductList(data || []);
     } catch (error) {
       console.error('Error fetching products:', error.message);
     }

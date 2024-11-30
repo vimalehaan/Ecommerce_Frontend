@@ -11,35 +11,31 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import axios from "axios";
+import { fetchAllCustomers, removeUser } from "../../../Actions/AdminAction";
 
 const UserPage = () => {
   const [userList, setUserList] = useState([]);
 
-  // Fetch user data from API using axios
+
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:8222/api/v1/customer/getAllCustomers");
-      setUserList(response.data.users); // Assuming `response.data.users` contains the user details
+      const response = await fetchAllCustomers();
+      setUserList(response);
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
   };
 
-  // Remove user handler
   const handleRemoveUser = async (userId) => {
     try {
-      // Dummy API request for removal using axios
-      await axios.delete(`https://dummyjson.com/users/${userId}`);
-
-      // Update state by filtering out the removed user
+      console.log("userId",userId);
+      await removeUser(userId);
       setUserList(userList.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Failed to delete user:", error);
     }
   };
 
-  // UseEffect to fetch data on component mount
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -69,7 +65,7 @@ const UserPage = () => {
               {userList.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    {user.firstName} {user.lastName}
+                    {user.name} 
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>

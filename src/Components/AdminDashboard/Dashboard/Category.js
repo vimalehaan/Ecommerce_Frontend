@@ -10,63 +10,101 @@ import {
   TextField,
   Button,
   Snackbar,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
-import axios from "axios";
+
+import {
+  addCategory,
+  deleteCategory,
+  fetchAllCategories,
+  editCategory,
+} from "../../../Actions/CategoryAction";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [newCategory, setNewCategory] = useState("");
-  const [newDescription, setNewDescription] = useState(""); // State for description
+  const [newDescription, setNewDescription] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  // Fetch categories (Static list or API request)
+  // Fetch categories from the server
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:8222/api/v1/category");
-      setCategories(response.data);
+      const response = await fetchAllCategories();
+      setCategories(response);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
   };
 
-  // Handle adding a new category
+  // Add a new category
   const handleAddCategory = async () => {
     if (newCategory.trim() === "" || newDescription.trim() === "") return;
 
     try {
-      // Add category with description
-      await axios.post("http://localhost:8222/api/v1/category", {
-        name: newCategory,
-        description: newDescription, // Add description to the request
-      });
-
-      // Update category list after adding a new category
+      await addCategory(newCategory, newDescription);
       fetchCategories();
       setNewCategory("");
-      setNewDescription(""); // Clear description field
+      setNewDescription("");
+      setSnackbarMessage("Category added successfully");
       setOpenSnackbar(true);
     } catch (error) {
       console.error("Failed to add category:", error);
     }
   };
 
-  // Handle deleting a category
-  const handleDeleteCategory = async (categoryId) => {
+  // Edit a category
+  const handleEditCategory = async () => {
+    if (!selectedCategoryId) {
+      setSnackbarMessage("Please select a category to edit");
+      setOpenSnackbar(true);
+      return;
+    }
+
+    if (newCategory.trim() === "" || newDescription.trim() === "") return;
+
     try {
-      await axios.delete(`http://localhost:8222/api/v1/category/${categoryId}`);
+      await editCategory(selectedCategoryId, newCategory, newDescription);
       fetchCategories();
+      setNewCategory("");
+      setNewDescription("");
+      setSelectedCategoryId(null);
+      setSnackbarMessage("Category edited successfully");
+      setOpenSnackbar(true);
+    } catch (error) {
+      console.error("Failed to edit category:", error);
+    }
+  };
+
+  // Delete a category
+  const handleDeleteCategory = async () => {
+    if (!selectedCategoryId) {
+      setSnackbarMessage("Please select a category to delete");
+      setOpenSnackbar(true);
+      return;
+    }
+
+    try {
+      await deleteCategory(selectedCategoryId);
+      fetchCategories();
+      setSelectedCategoryId(null);
+      setSnackbarMessage("Category deleted successfully");
       setOpenSnackbar(true);
     } catch (error) {
       console.error("Failed to delete category:", error);
     }
   };
 
+  // Fetch categories on component mount
   useEffect(() => {
-    fetchCategories(); 
+    fetchCategories();
   }, []);
 
   return (
-    <Box sx={{ p: 3 , mt:2, borderRadius:2,backgroundColor: "#f3f4f6"}}>
+    <Box sx={{ p: 3, mt: 2, borderRadius: 2, backgroundColor: "#f3f4f6" }}>
       <Paper
         sx={{
           p: 2,
@@ -80,33 +118,36 @@ const Category = () => {
           Categories
         </Typography>
         <Typography variant="body1" gutterBottom>
-          Total : {categories.length}
+          Total: {categories.length}
         </Typography>
         <List>
-          {categories.map((category) => (
-            <ListItem key={category.id} sx={{ display: "flex", justifyContent: "space-between" }}>
-              <ListItemText
-                primary={category.name}
-              />
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => handleDeleteCategory(category.id)}
+          <RadioGroup
+            value={selectedCategoryId}
+            onChange={(e) => setSelectedCategoryId(e.target.value)}
+          >
+            {categories.map((category) => (
+              <ListItem
+                key={category.id}
+                sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                Delete
-              </Button>
-            </ListItem>
-          ))}
+                <FormControlLabel
+                  value={category.id}
+                  control={<Radio />}
+                  label={category.name}
+                />
+              </ListItem>
+            ))}
+          </RadioGroup>
         </List>
 
         <Divider sx={{ my: 3 }} />
 
         <Typography variant="h6" gutterBottom>
-          Add New Category
+          Manage Category
         </Typography>
         <Box display="flex" flexDirection="column" gap={2}>
           <TextField
-            label="New Category"
+            label="Category Name"
             variant="outlined"
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
@@ -116,17 +157,20 @@ const Category = () => {
             label="Category Description"
             variant="outlined"
             value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)} // Handle description change
+            onChange={(e) => setNewDescription(e.target.value)}
             sx={{ flex: 1 }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddCategory}
-            sx={{ ml: 2 }}
-          >
-            Add
-          </Button>
+          <Box display="flex" gap={2} justifyContent="center">
+            <Button variant="contained" color="primary" onClick={handleAddCategory}>
+              Add
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleEditCategory}>
+              Edit
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDeleteCategory}>
+              Delete
+            </Button>
+          </Box>
         </Box>
       </Paper>
 
@@ -134,7 +178,7 @@ const Category = () => {
         open={openSnackbar}
         autoHideDuration={3000}
         onClose={() => setOpenSnackbar(false)}
-        message="Category updated"
+        message={snackbarMessage}
       />
     </Box>
   );

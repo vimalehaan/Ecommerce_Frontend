@@ -16,7 +16,9 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
-import Category from "./Category"; // Import Category component
+import Category from "./Category"; 
+import { fetchAllCustomers } from "../../../Actions/AdminAction";
+import { getProducts } from "../../../Actions/ProductApi";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -34,23 +36,21 @@ const DashboardPage = () => {
   const fetchMetrics = async () => {
     try {
       const [usersRes, productsRes, ordersRes] = await Promise.all([
-        axios.get("https://dummyjson.com/users"),
-        axios.get("http://localhost:8222/api/v1/products"),
+        fetchAllCustomers(),
+        getProducts(),
         axios.get("https://dummyjson.com/carts"),
       ]);
 
-      const usersData = usersRes.data;
-      const productsData = productsRes.data.content;
+      const usersData = usersRes;
+      const productsData = productsRes.content;
       const ordersData = ordersRes.data;
-
-      // Calculate total revenue
       const totalRevenue = ordersData.carts.reduce(
         (sum, cart) => sum + cart.total,
         0
       );
 
       setMetrics({
-        totalUsers: usersData.users.length,
+        totalUsers: usersData.length,
         totalProducts: productsData.length,
         totalOrders: ordersData.carts.length,
         totalRevenue,
