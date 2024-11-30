@@ -15,7 +15,7 @@ import { getUserById, updateUserAddress } from "../../Actions/AuthAction";
 // import user from "../../Data/UserData";
 
 const UserInfoCompo = () => {
-  const userId = useSelector((state) => state.auth.userId);
+  const userId = useSelector((state) => state.auth.user);
   const [user, setUser] = useState({
     name: "",
     userName: null,
@@ -57,14 +57,19 @@ const UserInfoCompo = () => {
     return <p>Loading...</p>;
   }
 
-  const fields = [
-    { label: "HouseNo", name: "houseNo" },
-    { label: "Street", name: "street" },
-    { label: "City", name: "city" },
-    { label: "District", name: "district" },
-    { label: "Province", name: "province" },
-    { label: "Postal Code", name: "postalCode" },
-  ];
+  let fields = [];
+
+  if (user) {
+    fields = [
+      { label: "HouseNo", name: "houseNo" },
+      { label: "Street", name: "street" },
+      { label: "City", name: "city" },
+      { label: "District", name: "district" },
+      { label: "Province", name: "province" },
+      { label: "Postal Code", name: "postalCode" },
+    ];
+  } // Else part is not necessary anymore
+
   // console.log("field", user.address.city)
   console.log("userID", userId);
   console.log("user", user);
@@ -191,54 +196,60 @@ const UserInfoCompo = () => {
                       Address:
                     </Typography>
 
-                    {user && addressData && fields.map((field) =>
-                      !editMode ? (
-                        <Box sx={{ py: "2px" }}>
-                          <Stack
-                            direction={"row"}
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Typography
-                              variant="primePara1"
-                              fontSize={13}
-                              textAlign={"end"}
-                              sx={{ minWidth: "100px", flexShrink: 0 }}
-                            >
-                              {field.label}:
-                            </Typography>
-                            <Typography
-                              fontSize={14}
-                              variant="primePara1"
-                              component="span"
+                    {user &&
+                      addressData &&
+                      fields &&
+                      fields.length > 0 &&
+                      fields.map((field) =>
+                        !editMode ? (
+                          <Box sx={{ py: "2px" }}>
+                            <Stack
+                              direction={"row"}
                               sx={{
-                                color: user.address[field.name]
-                                  ? "primary.lighter"
-                                  : "error.light",
-                                pl: "10px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
                               }}
                             >
-                              {user.address[field.name]
-                                ? user.address[field.name]
-                                : "No Data"}
-                            </Typography>
-                          </Stack>
-                        </Box>
-                      ) : (
-                        <FormTextField
-                          key={field.name}
-                          label={field.label}
-                          type={field.name === "postalCode" ? "number" : "text"}
-                          name={field.name}
-                          value={user.address[field.name]}
-                          defaultValue={user.address[field.name]}
-                          onChange={handleAddressChange}
-                        />
-                      )
-                    )}
+                              <Typography
+                                variant="primePara1"
+                                fontSize={13}
+                                textAlign={"end"}
+                                sx={{ minWidth: "100px", flexShrink: 0 }}
+                              >
+                                {field.label}:
+                              </Typography>
+                              <Typography
+                                fontSize={14}
+                                variant="primePara1"
+                                component="span"
+                                sx={{
+                                  color: user.address[field.name]
+                                    ? "primary.lighter"
+                                    : "error.light",
+                                  pl: "10px",
+                                }}
+                              >
+                                {user.address[field.name]
+                                  ? user.address[field.name]
+                                  : "No Data"}
+                              </Typography>
+                            </Stack>
+                          </Box>
+                        ) : (
+                          <FormTextField
+                            key={field.name}
+                            label={field.label}
+                            type={
+                              field.name === "postalCode" ? "number" : "text"
+                            }
+                            name={field.name}
+                            value={user.address[field.name]}
+                            defaultValue={user.address[field.name]}
+                            onChange={handleAddressChange}
+                          />
+                        )
+                      )}
                     <Divider sx={{ width: "100%" }} />
 
                     {!editMode ? (
