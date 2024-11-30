@@ -5,6 +5,7 @@ import {
   authSuccess,
   authFailure,
   setUser,
+  setRole,
   logout,
 } from "../Reducers/authSlice";
 
@@ -87,12 +88,15 @@ export const fetchUserId = () => async (dispatch) => {
         token: AccessToken,
       }
     );
+    console.log(response);
     // Assuming the response contains user data with userId
     const user = response.data.userId;
+    const role = response.data.userRole;
     console.log(user);
     console.log(response);
 
     dispatch(setUser(user));
+    dispatch(setRole(role));
   } catch (error) {
     dispatch(authFailure(error.response?.data || "Failed to fetch user data"));
   }

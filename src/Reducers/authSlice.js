@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   loading: true,
-  user: null, // This will store user data, including userId
+  user: null,
+  userRole: null,
   error: null,
 };
 
@@ -36,6 +37,10 @@ const authSlice = createSlice({
       state.user = action.payload; // This will store the user object (including userId)
       state.isAuthenticated = true;
     },
+    setRole(state, action) {
+      state.userRole = action.payload; // This will store the user object (including userId)
+      state.isAuthenticated = true;
+    },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   logout,
   finishLoading,
   setUser,
+  setRole,
 } = authSlice.actions;
 
 export default authSlice.reducer;
