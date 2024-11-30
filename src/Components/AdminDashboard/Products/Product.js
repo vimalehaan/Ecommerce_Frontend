@@ -47,7 +47,7 @@ const Product = ({ product, onEdit, onDelete }) => {
       <CardMedia
         component="img"
         height="250"
-        image={"https://i.pinimg.com/736x/be/fb/f9/befbf9746dfb21228c265e879a6321e3.jpg"}
+        image={product.productImg}
         alt={product.name}
         sx={{ borderRadius: "15px" }}
       />

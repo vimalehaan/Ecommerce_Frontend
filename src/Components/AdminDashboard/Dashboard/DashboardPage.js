@@ -16,8 +16,8 @@ import {
   Legend,
 } from "chart.js";
 import axios from "axios";
-import Category from "./Category"; 
-import { fetchAllCustomers } from "../../../Actions/AdminAction";
+import Category from "./Category";
+import { fetchAllCustomers, getOrders } from "../../../Actions/AdminAction";
 import { getProducts } from "../../../Actions/ProductApi";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -27,7 +27,7 @@ const DashboardPage = () => {
     totalUsers: 0,
     totalProducts: 0,
     totalOrders: 0,
-    totalRevenue: 0,
+   totalRevenue: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -38,23 +38,24 @@ const DashboardPage = () => {
       const [usersRes, productsRes, ordersRes] = await Promise.all([
         fetchAllCustomers(),
         getProducts(),
-        axios.get("https://dummyjson.com/carts"),
+        getOrders(),
       ]);
-
+console.log(ordersRes);
       const usersData = usersRes;
       const productsData = productsRes.content;
-      const ordersData = ordersRes.data;
-      const totalRevenue = ordersData.carts.reduce(
-        (sum, cart) => sum + cart.total,
-        0
-      );
-
+      const ordersData = ordersRes;
+      // const totalRevenue = ordersData.carts.reduce(
+      //   (sum, cart) => sum + cart.total,
+      //   0
+      // );
       setMetrics({
         totalUsers: usersData.length,
         totalProducts: productsData.length,
-        totalOrders: ordersData.carts.length,
-        totalRevenue,
+        totalOrders: ordersData.length,
+        
+        // totalRevenue,
       });
+    
     } catch (error) {
       console.error("Failed to fetch dashboard metrics:", error);
     } finally {
@@ -68,7 +69,7 @@ const DashboardPage = () => {
 
   // Bar chart data
   const chartData = {
-    labels: ["Users", "Products", "Orders", "Revenue"],
+    labels: ["Users", "Products", "Orders"],
     datasets: [
       {
         label: "Dashboard Metrics",
@@ -76,7 +77,7 @@ const DashboardPage = () => {
           metrics.totalUsers,
           metrics.totalProducts,
           metrics.totalOrders,
-         // metrics.totalRevenue,
+          metrics.totalRevenue,
         ],
         backgroundColor: ["#4CAF50", "#FFC107", "#2196F3", "#FF5722"],
       },
@@ -156,19 +157,18 @@ const DashboardPage = () => {
               </Typography>
             </Paper>
           </Box>
-<Box sx={{display:"flex"}}>
-<Box mt={4} sx={{width:"40vw"}}>
-            <Typography variant="h6" gutterBottom>
-              Metrics Overview
-            </Typography>
-            <Bar data={chartData} />
-          </Box>
+          <Box >
+            <Box mt={4} sx={{ width: "55vw" }}>
+              <Typography variant="h6" gutterBottom>
+                Metrics Overview
+              </Typography>
+              <Bar data={chartData} />
+            </Box>
 
-          <Box mt={4} sx={{width:"20vw"}}>
-            <Category /> {/* Category management component */}
+            <Box mt={4} sx={{ width: "55vw" }}>
+              <Category /> 
+            </Box>
           </Box>
-</Box>
-          
         </>
       )}
     </Box>

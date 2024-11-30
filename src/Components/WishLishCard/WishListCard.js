@@ -8,8 +8,10 @@ import {
   Box,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import AddToCartBtn from "../ProductDetailPage/AddToCartBtn";
 
 const WishlistItem = ({
+  id,
   image,
   title,
   details,

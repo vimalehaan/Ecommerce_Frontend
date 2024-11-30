@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { getProducts } from '../../../Actions/ProductApi';
+import { handleAlert } from '../../../Actions/AdminAction';
 
 const InventoryPage = () => {
   const [productList, setProductList] = useState([]);
+  const [lowStockAlert, setLowStockAlert] = useState(""); // State to hold the low stock alert message
+
   const fetchProductData = async () => {
     try {
       const response = await getProducts();
       const data = response.content; 
       setProductList(data || []);
+      
+      // Check for products with stock less than 5
+      const lowStockProducts = handleAlert();
+      
+      // If there are any low stock products, set the alert message
+      if (lowStockProducts.length > 0) {
+        const productNames = lowStockProducts.map(product => product.name).join(', ');
+        setLowStockAlert(`Warning: The following products have less than 5 items in stock: ${productNames}. Please check.`);
+      } else {
+        setLowStockAlert(""); // Clear the alert if no low stock products
+      }
+
     } catch (error) {
       console.error('Error fetching products:', error.message);
     }
@@ -16,8 +31,6 @@ const InventoryPage = () => {
 
   useEffect(() => {
     fetchProductData();
-    console.log(productList);
-
   }, []);
 
   return (
@@ -55,6 +68,15 @@ const InventoryPage = () => {
           </Typography>
         )}
       </Box>
+
+      {/* Display the alert message below the inventory table */}
+      {lowStockAlert && (
+        <Box sx={{ marginTop: '20px', backgroundColor: '#ffcc00', padding: '10px', borderRadius: '4px' }}>
+          <Typography variant="body1" align="center" color="textPrimary">
+            {lowStockAlert}
+          </Typography>
+        </Box>
+      )}
     </div>
   );
 };

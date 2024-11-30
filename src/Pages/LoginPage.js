@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom"; // Import navigation hook
 import NavBar from "../Components/Utils/NavBar";
 import loginImage from "../Assets/Login/LoginImg.jpg";
 import { login } from "../Actions/AuthAction"; // Ensure correct import path
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Footer from "../Components/Utils/Footer";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated); // Get userId from Redux
 
   // State for managing form inputs
   const [email, setEmail] = useState("");
@@ -27,14 +30,9 @@ const LoginPage = () => {
 
     try {
       // Dispatch login action via Redux
-      await dispatch(login(email, password)); // The Redux thunk for login handles state updates
-
-      // Store token in localStorage for persistent authentication
-      const authToken = localStorage.getItem("authToken");
-      if (authToken) {
-        navigate("/dashboard"); // Redirect to dashboard or desired route after successful login
-      } else {
-        setError("Authentication token is missing."); // Handle unexpected scenarios
+      const response = await dispatch(login(email, password)); // The Redux thunk for login handles state updates
+      if (response.status == 200) {
+        navigate("/"); // Redirect to root path after successful login
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -159,7 +157,7 @@ const LoginPage = () => {
 
                 {/* Forgot Password Link */}
                 <Link
-                  href="#"
+                  href="/forgotpassword"
                   sx={{
                     marginTop: "10px",
                     textDecoration: "none",
@@ -172,7 +170,10 @@ const LoginPage = () => {
                 {/* Sign Up Link */}
                 <Typography sx={{ marginTop: "20px" }}>
                   Don’t have an account?{" "}
-                  <Link href="#" sx={{ textDecoration: "none", color: "blue" }}>
+                  <Link
+                    href="/signup"
+                    sx={{ textDecoration: "none", color: "blue" }}
+                  >
                     Sign Up
                   </Link>
                 </Typography>
@@ -216,6 +217,7 @@ const LoginPage = () => {
           </Grid>
         </Box>
       </Box>
+      <Footer />
     </div>
   );
 };

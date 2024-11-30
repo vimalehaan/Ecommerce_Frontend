@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getTokenFromCookies } from "./AuthAction"; // Ensure this function is correctly implemented and imported
+import { getTokenFromCookies } from "./AuthAction";
+import {getProducts} from './ProductApi';
 import { baseIp } from "../Server";
 // Fetch all customers
 export const fetchAllCustomers = async () => { 
@@ -73,12 +74,12 @@ export const getOrders = async () => {
   }
 };
 
-//
+//product
 export const updateProduct = async (payload) => {
   try {
     const token = getTokenFromCookies(); // Ensure this method retrieves the token correctly
     const response = await axios.put(
-      "http://localhost:8222/api/v1/products",
+      `${baseIp}/api/v1/products`,
       payload, // Send the payload in the request body
       {
         headers: {
@@ -90,5 +91,22 @@ export const updateProduct = async (payload) => {
   } catch (error) {
     console.error("Error updating product:", error.response?.data || error.message);
     throw error;
+  }
+};
+
+export const handleAlert = async () => {
+  try {
+    const response = await getProducts(); 
+    console.log("response",response.content);
+    const lowStockProducts = response.content.filter(product => product.availableQuantity < 5);
+
+    console.log("lowStockProducts",lowStockProducts);
+    if (lowStockProducts.length > 0) {
+      const productNames = lowStockProducts.map(product => product.name).join(', ');
+      const alertMessage = `Warning: The following products have less than 5 items in stock: ${productNames}. Please check.`;
+      alert(alertMessage);
+    } 
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
   }
 };
