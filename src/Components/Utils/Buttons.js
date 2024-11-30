@@ -68,6 +68,8 @@ export const BlackButton = ({ text, ...props }) => {
   return (
     <Button
       disableElevation
+      onClick={props.onClick}
+      type={props.type}
       variant="contained"
       sx={{
         fontWeight: 600,
