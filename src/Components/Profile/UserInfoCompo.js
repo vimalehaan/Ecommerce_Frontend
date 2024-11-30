@@ -15,7 +15,7 @@ import { getUserById, updateUserAddress } from "../../Actions/AuthAction";
 // import user from "../../Data/UserData";
 
 const UserInfoCompo = () => {
-  const userId = useSelector((state) => state.auth.userId);
+  const userId = useSelector((state) => state.auth.user);
   const [user, setUser] = useState({
     name: "",
     userName: null,
