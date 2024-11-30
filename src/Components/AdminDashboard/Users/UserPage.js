@@ -11,40 +11,34 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import { fetchAllCustomers, removeUser } from "../../../Actions/AdminAction";
 
 const UserPage = () => {
   const [userList, setUserList] = useState([]);
 
-  // Fetch user data from API
+
   const fetchUserData = async () => {
     try {
-      const response = await fetch("https://dummyjson.com/users");
-      const data = await response.json();
-      setUserList(data.users); // Assuming `data.users` contains the user details
+      const response = await fetchAllCustomers();
+      setUserList(response);
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
   };
 
-  // UseEffect to fetch data on component mount
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  // Remove user handler
   const handleRemoveUser = async (userId) => {
     try {
-      // Dummy API request for removal
-      await fetch(`https://dummyjson.com/users/${userId}`, {
-        method: "DELETE",
-      });
-
-      // Update state by filtering out the removed user
+      console.log("userId",userId);
+      await removeUser(userId);
       setUserList(userList.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Failed to delete user:", error);
     }
   };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <div>
@@ -71,7 +65,7 @@ const UserPage = () => {
               {userList.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    {user.firstName} {user.lastName}
+                    {user.name} 
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>

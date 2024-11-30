@@ -1,13 +1,21 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
+import {app} from "../firebase";
 export const uploadImage = async (file) => {
-  const storage = getStorage();
-  const storageRef = ref(storage, `EAD_Glammod/${generateUniqueIdentifier()}`);
+  try{
+    console.log("hi");
+    const storage = getStorage(app);
+    const storageRef = ref(storage, `EAD_Glammod/${generateUniqueIdentifier()}`);
+    console.log("storage",storageRef);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    console.log("storage",downloadURL);
+  
+    return downloadURL;
+  } catch (error) {
+    console.error("Error updating product:", error.message);
+    throw error;}
 
-  await uploadBytes(storageRef, file);
-  const downloadURL = await getDownloadURL(storageRef);
-
-  return downloadURL;
+  
 };
 
 export const generateUniqueIdentifier = () => {
