@@ -8,6 +8,7 @@ import {
   getWishlistItems,
   removeFromWishlist,
 } from "../Actions/WishlistAction"; // Action to fetch wishlist items
+import { addToCart } from "../Actions/CartAction";
 
 const WishlistPage = () => {
   const userId = useSelector((state) => state.auth.user); // Get user ID from Redux state
@@ -38,11 +39,6 @@ const WishlistPage = () => {
     } catch (error) {
       console.error("Failed to delete item:", error);
     }
-  };
-
-  const handleAddToCart = (id) => {
-    console.log(`Add to cart item with id: ${id}`);
-    // You can dispatch an add-to-cart action or call API to add the product to the cart
   };
 
   return (
@@ -96,7 +92,6 @@ const WishlistPage = () => {
                       details={product.productDescription}
                       price={product.productPrice}
                       onDelete={() => handleDelete(product.productId)}
-                      onAddToCart={() => handleAddToCart(product.id)}
                     />
                   ))}
               </div>

@@ -1,19 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSelector } from "react-redux";
-import { deleteCartItem } from "../../Actions/CartAction";
+import { addToCart, deleteCartItem } from "../../Actions/CartAction";
 
-const CartItem = ({ CartProduct, onDelete }) => {
+const CartItem = ({ CartProduct, onDelete, onQuantityChange }) => {
   const [quantity, setQuantity] = React.useState(CartProduct.quantity); // Initialize with the current quantity
 
   // Handlers for incrementing and decrementing quantity
-  const handleIncrement = () => setQuantity((prev) => prev + 1);
+  const handleIncrement = () => {
+    setQuantity((prev) => prev + 1);
+  };
   const handleDecrement = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   const userId = useSelector((state) => state.auth.user); // Get userId from Redux
+
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        console.log("USS", userId);
+        const updatedCart = await addToCart(
+          CartProduct.productId,
+          CartProduct.quantity,
+          userId
+        );
+        console.log("Updated cart details:", updatedCart);
+      } catch (error) {
+        console.error("Failed to update cart quantity:", error.message);
+      }
+    };
+
+    if (quantity !== undefined) {
+      updateCart(); // Call the async function
+      onQuantityChange();
+    }
+  }, [quantity, CartProduct.productId, userId]); // Add all relevant dependencies
 
   // Handle delete action
   const handleDelete = async () => {

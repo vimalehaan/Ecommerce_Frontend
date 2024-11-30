@@ -64,7 +64,7 @@ const CartPage = () => {
       setSubtotal(newSubtotal);
       setTotal(newTotal);
     }
-  }, [cartProducts]); // Recalculate when cartProducts changes
+  }, [cartProducts, changed]); // Recalculate when cartProducts changes
 
   const onDelete = () => {
     setChanged(changed + 1);
@@ -146,7 +146,11 @@ const CartPage = () => {
                         />
                       }
                       label={
-                        <CartItem CartProduct={product} onDelete={onDelete} />
+                        <CartItem
+                          CartProduct={product}
+                          onDelete={onDelete}
+                          onQuantityChange={onDelete}
+                        />
                       }
                     />
                   </Box>

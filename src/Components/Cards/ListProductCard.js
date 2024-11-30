@@ -18,6 +18,9 @@ import {
 
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addToCart } from "../../Actions/CartAction";
+import { useSelector } from "react-redux";
+import { addToWishlist } from "../../Actions/WishlistAction";
 
 const ListProductCard = ({
   id,
@@ -29,9 +32,19 @@ const ListProductCard = ({
 }) => {
   const [fav, setFav] = useState(false);
   const navigate = useNavigate(); // Initialize the navigate function
+  const userId = useSelector((state) => state.auth.user); // Get user ID from Redux state
 
-  const toggleFavorite = () => {
+  const truncatedTitle = title.length > 35 ? title.slice(0, 35) + "..." : title;
+  const truncatedDescription =
+    description.length > 60 ? description.slice(0, 60) + "..." : description;
+
+  const toggleFavorite = async () => {
     setFav((prev) => !prev);
+    try {
+      await addToWishlist(id, userId);
+    } catch (error) {
+      console.error("Failed to add item to wishlist:", error.message);
+    }
   };
 
   const isInStock = availableQuantity > 0; // Determine stock status
@@ -40,8 +53,13 @@ const ListProductCard = ({
     navigate(`/product/${id}`); // Redirect to the product details page
   };
 
-  const handleAddCartClick = () => {
-    console.log("Hello cart");
+  const handleAddCartClick = async () => {
+    try {
+      await addToCart(id, 1, userId);
+      console.log("Item added to cart successfully");
+    } catch (error) {
+      console.error("Failed to add item to cart:", error.message);
+    }
   };
 
   return (
@@ -106,8 +124,9 @@ const ListProductCard = ({
           >
             <Stack direction={"column"} spacing={0.2}>
               <Typography
+                color="primary.darker"
                 variant="body1"
-                fontWeight={500}
+                fontWeight={600}
                 textAlign={"start"}
                 sx={{
                   overflow: "hidden",
@@ -118,15 +137,14 @@ const ListProductCard = ({
                   WebkitBoxOrient: "vertical",
                 }}
               >
-                {title}
+                {truncatedTitle}
               </Typography>
               <Typography
                 variant="subtitle2"
-                color="primary.darker"
                 textAlign={"left"}
-                fontWeight={600}
+                fontWeight={400}
               >
-                {description}
+                {truncatedDescription}
               </Typography>
             </Stack>
           </Box>
