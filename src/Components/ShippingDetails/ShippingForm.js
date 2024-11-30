@@ -4,29 +4,26 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-  Button,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/system";
+import { BlackBigButton } from "../Utils/Buttons";
+import { useDispatch } from "react-redux"; // Import useDispatch
+import { setShippingDetails } from "../../Reducers/shippingDetailSlice"; // Import your action
+import { useNavigate } from "react-router-dom";
 
-// Custom-styled Button for Confirm Details
-const CustomButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#15B392",
-  color: "white",
-  "&:hover": {
-    backgroundColor: "#128c74", // Slightly darker shade for hover effect
-  },
-}));
+const ShippingForm = ({ handleSubmit }) => {
+  const dispatch = useDispatch(); // Initialize the dispatch function
+  const navigate = useNavigate();
 
-const ShippingForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    fullname: "",
+    phoneNo: "",
+    houseNo: "",
     street: "",
     city: "",
+    district: "",
     province: "",
-    phone: "",
-    email: "",
+    postalCode: "",
     saveInfo: false,
   });
 
@@ -38,37 +35,51 @@ const ShippingForm = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData); // Callback to handle form submission
-    console.log("Submitted Data:", formData);
+  const handleConfirm = () => {
+    console.log("Submitted Data:", formData); // Log the form data
+
+    // Save formData in localStorage as a JSON string
+    localStorage.setItem("shippingDetails", JSON.stringify(formData));
+
+    // Dispatch form data to Redux
+    dispatch(setShippingDetails(formData));
+
+    handleSubmit();
+    navigate("/payment");
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
       sx={{
         display: "flex",
         flexDirection: "column",
         gap: 2,
       }}
     >
-      <Typography variant="h5" textAlign="left">
+      <Typography variant="title" textAlign="left" fontWeight="bold">
         Shipping
       </Typography>
       <TextField
-        label="First Name"
-        name="firstName"
-        value={formData.firstName}
+        label="Full Name"
+        name="fullname"
+        value={formData.fullname}
         onChange={handleChange}
         fullWidth
         required
       />
       <TextField
-        label="Last Name"
-        name="lastName"
-        value={formData.lastName}
+        label="Phone Number"
+        name="phoneNo"
+        value={formData.phoneNo}
+        onChange={handleChange}
+        fullWidth
+        required
+      />
+      <TextField
+        label="House Number"
+        name="houseNo"
+        value={formData.houseNo}
         onChange={handleChange}
         fullWidth
         required
@@ -90,6 +101,14 @@ const ShippingForm = ({ onSubmit }) => {
         required
       />
       <TextField
+        label="District"
+        name="district"
+        value={formData.district}
+        onChange={handleChange}
+        fullWidth
+        required
+      />
+      <TextField
         label="Province"
         name="province"
         value={formData.province}
@@ -98,18 +117,9 @@ const ShippingForm = ({ onSubmit }) => {
         required
       />
       <TextField
-        label="Phone Number"
-        name="phone"
-        value={formData.phone}
-        onChange={handleChange}
-        fullWidth
-        required
-      />
-      <TextField
-        label="Email Address"
-        name="email"
-        type="email"
-        value={formData.email}
+        label="Postal Code"
+        name="postalCode"
+        value={formData.postalCode}
         onChange={handleChange}
         fullWidth
         required
@@ -129,9 +139,7 @@ const ShippingForm = ({ onSubmit }) => {
         }
         label="Save this information for faster check-out next time"
       />
-      <CustomButton type="submit" variant="contained" fullWidth>
-        Confirm Details
-      </CustomButton>
+      <BlackBigButton text="Confirm Details" onClick={handleConfirm} />
     </Box>
   );
 };

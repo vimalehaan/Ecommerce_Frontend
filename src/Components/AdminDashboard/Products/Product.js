@@ -43,11 +43,18 @@ const Product = ({ product, onEdit, onDelete }) => {
   };
 
   return (
-    <Card style={{ margin: "10px", padding: "10px", width: "250px", borderRadius: "10px" }}>
+    <Card
+      style={{
+        margin: "10px",
+        padding: "10px",
+        width: "250px",
+        borderRadius: "10px",
+      }}
+    >
       <CardMedia
         component="img"
         height="250"
-        image={product.productImg}
+        image={product.productImg[0]}
         alt={product.name}
         sx={{ borderRadius: "15px" }}
       />
@@ -58,11 +65,21 @@ const Product = ({ product, onEdit, onDelete }) => {
         <Typography>Quantity: {product.availableQuantity}</Typography>
         <Typography>Price: LKR {product.price}</Typography>
       </CardContent>
-      <Box sx={{ display: "flex", justifyContent: "space-between", padding: "8px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "8px",
+        }}
+      >
         <Button variant="outlined" color="primary" onClick={handleEditOpen}>
           Edit
         </Button>
-        <Button variant="outlined" color="error" onClick={() => onDelete(product.id)}>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() => onDelete(product.id)}
+        >
           Delete
         </Button>
       </Box>
@@ -71,7 +88,13 @@ const Product = ({ product, onEdit, onDelete }) => {
       <Dialog open={editOpen} onClose={handleEditClose}>
         <DialogTitle>Edit Product</DialogTitle>
         <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2} mt={1} sx={{ width: "30vw" }}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            mt={1}
+            sx={{ width: "30vw" }}
+          >
             <TextField
               label="Product Name"
               value={editedProduct.name}
@@ -86,7 +109,9 @@ const Product = ({ product, onEdit, onDelete }) => {
               label="Quantity"
               type="number"
               value={editedProduct.availableQuantity}
-              onChange={(e) => handleEditChange("availableQuantity", e.target.value)}
+              onChange={(e) =>
+                handleEditChange("availableQuantity", e.target.value)
+              }
             />
             <TextField
               label="Price"

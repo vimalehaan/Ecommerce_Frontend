@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardMedia,
@@ -8,17 +8,23 @@ import {
   Box,
 } from "@mui/material";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import AddToCartBtn from "../ProductDetailPage/AddToCartBtn";
+import { addToCart } from "../../Actions/CartAction";
+import { useSelector } from "react-redux";
 
-const WishlistItem = ({
-  id,
-  image,
-  title,
-  details,
-  price,
-  onDelete,
-  onAddToCart,
-}) => {
+const WishlistItem = ({ id, image, title, details, price, onDelete }) => {
+  const userId = useSelector((state) => state.auth.user); // Ensure proper state path
+
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(id, 1, userId); // Call with id, quantity, and userId
+      console.log("Item added to cart successfully");
+    } catch (error) {
+      console.error("Failed to add item to cart:", error.message);
+    }
+  };
+
+  useEffect(() => {}, [userId]);
+
   return (
     <Card
       sx={{
@@ -46,7 +52,7 @@ const WishlistItem = ({
 
       {/* Content */}
       <Box sx={{ flex: 2, marginLeft: 2, textAlign: "left" }}>
-        <Typography variant="primePara1" component="div">
+        <Typography variant="body1" component="div">
           {title}
         </Typography>
         <Typography
@@ -76,7 +82,7 @@ const WishlistItem = ({
             textTransform: "none",
             borderRadius: 3,
           }}
-          onClick={onAddToCart}
+          onClick={handleAddToCart} // Removed argument
         >
           Add to Cart
         </Button>

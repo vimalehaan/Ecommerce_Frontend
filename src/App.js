@@ -36,14 +36,15 @@ function App() {
           <Route path="/signup" Component={SignUpPage} />
           <Route path="/wishlist" Component={wishlistPage} />
 
-          <Route path="/product" Component={ProductPage} />
+          <Route path="/product/:productId" Component={ProductPage} />
           <Route path="/productlist" Component={ProductListPage} />
           <Route path="/cart" Component={CartPage} />
           <Route path="/forgotpassword" Component={ForgotPassword} />
-          {/* <Route path="/payment" Component={PaymentPage} /> */}
+          <Route path="/payment" Component={PaymentPage} />
           <Route path="/admin" Component={AdminDashboard} />
-          <Route path ="/shipping"Component={ShippingPage} />
-          <Route path ="/profile"Component={ProfilePage} />
+          <Route path="/shipping" Component={ShippingPage} />
+          <Route path="/profile" Component={ProfilePage} />
+          <Route path="/shipping" Component={ShippingPage} />
         </Routes>
       </div>
     </ThemeProvider>

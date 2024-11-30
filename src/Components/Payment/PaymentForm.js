@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { Button, Box, Typography } from "@mui/material";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
+import { createOrder, createPaymentIntent } from "../../Actions/OrderAction"; // Import the new action
+import { useDispatch, useSelector } from "react-redux";
 
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.user); // Get userId from Redux
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,24 +28,22 @@ const PaymentForm = () => {
 
     setIsProcessing(true);
 
-    // Log elements and cardElement to check if CardElement is correctly initialized
     console.log("Stripe Elements initialized:", elements);
 
-    const cardElement = elements.getElement(CardElement);
+    const cardNumberElement = elements.getElement(CardNumberElement);
 
-    if (!cardElement) {
-      console.error("Card Element not found");
+    if (!cardNumberElement) {
+      console.error("Card Number Element not found");
       setIsProcessing(false);
       return;
     }
 
-    // Log cardElement to ensure it's properly initialized
-    console.log("Card Element:", cardElement);
+    console.log("Card Number Element:", cardNumberElement);
 
     // Create the payment method using the card element
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
-      card: cardElement,
+      card: cardNumberElement,
     });
 
     if (error) {
@@ -42,37 +52,46 @@ const PaymentForm = () => {
       return;
     }
 
-    // Log the payment method ID to ensure it’s being created correctly
     console.log("Payment Method Created:", paymentMethod);
 
-    // Send payment method ID to backend
-    try {
-      const response = await fetch(
-        "http://localhost:8010/api/payments/create-intent",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            amount: 3000, // Amount in smallest currency unit (e.g., cents)
-            currency: "usd",
-            paymentMethodId: paymentMethod.id,
-          }),
-        }
-      );
+    // Fetch total price from local storage
+    const totalAmount = JSON.parse(localStorage.getItem("total"));
 
-      const result = await response.json();
-      if (result.error) {
-        console.error("Payment Failed:", result.error);
-      } else {
-        console.log("Payment Successful:", result);
-      }
-    } catch (err) {
-      console.error("Backend Error:", err);
-    } finally {
-      setIsProcessing(false);
+    // Ensure the totalAmount is fetched and valid before proceeding
+    if (!totalAmount || isNaN(totalAmount)) {
+      console.error("Total amount is invalid or not found in local storage.");
+      return; // Exit if total is not valid
     }
+
+    // Call the new action to handle the API request
+    const {
+      success,
+      error: apiError,
+      result,
+    } = await createPaymentIntent(
+      totalAmount * 100, // Use the total price fetched from local storage
+      "lkr", // Currency in Sri Lankan Rupees
+      paymentMethod.id
+    );
+
+    console.log("Ressponse Check :", result);
+
+    if (!success) {
+      console.error("Payment Failed:", apiError);
+    } else {
+      try {
+        console.log("Payment Successful:", result);
+        const response = await dispatch(createOrder(result.id, userId));
+        if (response) {
+          console.log("Order Created");
+          navigate("/"); // Redirect after successful payment
+        }
+      } catch (error) {
+        console.error("Error during order creation:", error);
+      }
+    }
+
+    setIsProcessing(false);
   };
 
   return (
@@ -90,7 +109,63 @@ const PaymentForm = () => {
             backgroundColor: "#f9f9f9",
           }}
         >
-          <CardElement
+          <CardNumberElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": { color: "#aab7c4" },
+                },
+                invalid: { color: "#9e2146" },
+              },
+            }}
+          />
+        </Box>
+      </Box>
+
+      {/* Expiry Date Section */}
+      <Box sx={{ marginBottom: 3 }}>
+        <Typography variant="body1" sx={{ marginBottom: 1, textAlign: "left" }}>
+          Expiry Date
+        </Typography>
+        <Box
+          sx={{
+            padding: "16px",
+            border: "1px solid #e0e0e0",
+            borderRadius: "8px",
+            backgroundColor: "#f9f9f9",
+          }}
+        >
+          <CardExpiryElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": { color: "#aab7c4" },
+                },
+                invalid: { color: "#9e2146" },
+              },
+            }}
+          />
+        </Box>
+      </Box>
+
+      {/* CVC Section */}
+      <Box sx={{ marginBottom: 3 }}>
+        <Typography variant="body1" sx={{ marginBottom: 1, textAlign: "left" }}>
+          CVC
+        </Typography>
+        <Box
+          sx={{
+            padding: "16px",
+            border: "1px solid #e0e0e0",
+            borderRadius: "8px",
+            backgroundColor: "#f9f9f9",
+          }}
+        >
+          <CardCvcElement
             options={{
               style: {
                 base: {
