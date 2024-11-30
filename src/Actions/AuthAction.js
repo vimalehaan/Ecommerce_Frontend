@@ -88,7 +88,7 @@ export const fetchUserId = () => async (dispatch) => {
       }
     );
     // Assuming the response contains user data with userId
-    const user = response.data;
+    const user = response.data.userId;
 
     dispatch(setUser(user));
   } catch (error) {

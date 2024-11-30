@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getTokenFromCookies } from "./AuthAction"; // Import token function
 import { baseIp } from "../Server"; // Base API URL
+import { getTokenFromCookies } from "./AuthAction";
 // **Add to Cart**
 export const addToCart = async (productId, quantity, userId) => {
   try {

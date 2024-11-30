@@ -43,7 +43,7 @@ const CartItem = ({ CartProduct, onDelete }) => {
       {/* Product Image */}
       <Box
         component="img"
-        src="https://img.freepik.com/free-photo/handsome-man-wearing-bomber-jacket_176474-50013.jpg?t=st=1732303502~exp=1732307102~hmac=43ba7c4d428cac627d6c742ad002092370ecfdc1598ede43c6e74407f1c73608&w=996" // Replace with your product image URL
+        src={CartProduct.productImg[0]}
         alt="Product"
         sx={{
           width: 100,

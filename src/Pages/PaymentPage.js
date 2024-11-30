@@ -20,15 +20,17 @@ const PaymentPage = () => {
       >
         <Paper elevation={3} style={{ padding: "32px", borderRadius: "16px" }}>
           <Typography
-            variant="h4"
+            variant="title"
             fontWeight="bold"
             align="center"
-            style={{ marginBottom: "24px", color: "#8B29E1" }}
+            style={{ marginBottom: "24px", color: "black" }}
           >
             Payment Page
           </Typography>
           <Divider style={{ marginBottom: "24px" }} />
-          <Elements stripe={stripePromise}>{/* <PaymentForm /> */}</Elements>
+          <Elements stripe={stripePromise}>
+            <PaymentForm />
+          </Elements>
         </Paper>
       </Container>
     </div>
