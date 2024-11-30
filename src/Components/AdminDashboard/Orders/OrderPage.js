@@ -19,25 +19,24 @@ import { getOrders } from "../../../Actions/AdminAction";
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
 
- 
   const fetchOrders = async () => {
     try {
       const response = await getOrders();
       // console.log("g",response);
-      setOrders(response); 
+      setOrders(response);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     }
   };
 
   // Update order status
-  const handleStatusChange = (orderId, newStatus) => {
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
-    );
-  };
+  // const handleStatusChange = (orderId, newStatus) => {
+  //   setOrders((prevOrders) =>
+  //     prevOrders.map((order) =>
+  //       order.id === orderId ? { ...order, status: newStatus } : order
+  //     )
+  //   );
+  // };
 
   useEffect(() => {
     fetchOrders();
@@ -77,48 +76,49 @@ const OrderPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>{order.userId}</TableCell>
-                  <TableCell>{new Date().toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    {order.products.map((item) => (
-                      <div key={item.id}>
-                        {item.title} (x{item.quantity})
-                      </div>
-                    ))}
-                  </TableCell>
-                  <TableCell>LKR {order.total}</TableCell>
-                  <TableCell>
-                    <FormControl size="small">
-                      <Select
-                        value={order.status || "Pending"}
-                        onChange={(e) =>
-                          handleStatusChange(order.id, e.target.value)
+              {orders &&
+                orders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell>{order.id}</TableCell>
+                    <TableCell>{order.userId}</TableCell>
+                    <TableCell>{new Date().toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {order.products.map((item) => (
+                        <div key={item.id}>
+                          {item.title} (x{item.quantity})
+                        </div>
+                      ))}
+                    </TableCell>
+                    <TableCell>LKR {order.total}</TableCell>
+                    <TableCell>
+                      <FormControl size="small">
+                        <Select
+                          value={order.status || "Pending"}
+                          //</FormControl>onChange={(e) =>
+                          // handleStatusChange(order.id, e.target.value)
+                          // }
+                        >
+                          <MenuItem value="Pending">Pending</MenuItem>
+                          <MenuItem value="Shipped">Shipped</MenuItem>
+                          <MenuItem value="Delivered">Delivered</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() =>
+                          setOrders((prev) =>
+                            prev.filter((o) => o.id !== order.id)
+                          )
                         }
                       >
-                        <MenuItem value="Pending">Pending</MenuItem>
-                        <MenuItem value="Shipped">Shipped</MenuItem>
-                        <MenuItem value="Delivered">Delivered</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() =>
-                        setOrders((prev) =>
-                          prev.filter((o) => o.id !== order.id)
-                        )
-                      }
-                    >
-                      Cancel
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        Cancel
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
