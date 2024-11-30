@@ -159,14 +159,12 @@ const ProductListPage = () => {
     const initializeData = async () => {
       try {
         setLoading(true);
-        console.log("dssd");
         const [fetchedProducts, fetchedCategories] = await Promise.all([
           getProducts(),
           fetchAllCategories(),
         ]);
         setProductList(fetchedProducts.content);
         setCategories(fetchedCategories);
-        console.log("CAt", categories);
       } catch (error) {
         setError("Failed to load data.");
       } finally {

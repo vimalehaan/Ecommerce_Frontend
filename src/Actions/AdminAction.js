@@ -78,21 +78,33 @@ export const getOrders = async () => {
 export const updateProduct = async (payload) => {
   try {
     const token = getTokenFromCookies(); // Ensure this method retrieves the token correctly
+
+    // Construct FormData
+    const formData = new FormData();
+    for (const key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        formData.append(key, payload[key]);
+      }
+    }
+
     const response = await axios.put(
       `${baseIp}/api/v1/products`,
-      payload, // Send the payload in the request body
+      formData, // Send the FormData in the request body
       {
         headers: {
           Authorization: `Bearer ${token}`, // Add token in the header
+          "Content-Type": "multipart/form-data", // Specify the correct content type
         },
       }
     );
+
     return response.data;
   } catch (error) {
     console.error("Error updating product:", error.response?.data || error.message);
     throw error;
   }
 };
+
 
 export const handleAlert = async () => {
   try {

@@ -32,7 +32,7 @@ const DashboardPage = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // Fetch metrics data using Axios
+
   const fetchMetrics = async () => {
     try {
       const [usersRes, productsRes, ordersRes] = await Promise.all([
@@ -40,7 +40,7 @@ const DashboardPage = () => {
         getProducts(),
         getOrders(),
       ]);
-console.log(ordersRes);
+// console.log(ordersRes);
       const usersData = usersRes;
       const productsData = productsRes.content;
       const ordersData = ordersRes;

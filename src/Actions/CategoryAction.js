@@ -10,7 +10,7 @@ export const fetchAllCategories = async () => {
         Authorization: `Bearer ${token}`, // Add token in the header
       },
     });
-    console.log(response);
+   // console.log(response);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch users:", error);
