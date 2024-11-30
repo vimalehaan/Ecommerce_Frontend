@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Menu,
   MenuItem,
@@ -14,6 +15,7 @@ import { useDispatch } from "react-redux";
 const AccountDropdown = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -29,7 +31,8 @@ const AccountDropdown = () => {
 
   // Action for each menu item
   const handleAccount = () => {
-    alert("Navigate to Account page");
+    // alert("Navigate to Account page");
+    navigate(`/profile`);
     handleCloseMenu();
   };
 

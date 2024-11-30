@@ -1,89 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import Grid2 from "@mui/material/Grid2";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 
 import PlainBox from "../StyledComponents/PlainBox";
 import FormTextField from "../Utils/FormTextField";
 import { BlackButton, OutlinedBlackButton } from "../Utils/Buttons";
+import { getUserById, updateUserAddress } from "../../Actions/AuthAction";
 
-import user from "../../Data/UserData";
-import { height } from "@mui/system";
+// import user from "../../Data/UserData";
 
 const UserInfoCompo = () => {
-  console.log(user);
-
-  const [editMode, setEditMode] = useState(false);
-
-  const [formData, setFormData] = useState({
-    house_no: user.house_no || "",
-    street: user.street || "",
-    city: user.city || "",
-    district: user.district || "",
-    postal_code: user.postal_code || "",
-    phone_no: user.phone_no || "",
+  const userId = useSelector((state) => state.auth.userId);
+  const [user, setUser] = useState({
+    name: "",
+    userName: null,
+    email: "",
+    address: {
+      houseNo: null,
+      street: null,
+      city: "",
+      district: null,
+      province: null,
+      postalCode: null,
+    },
+    phoneNo: null,
   });
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({});
+  const [addressData, setAddressData] = useState({});
+  const [telephoneNum, setTelephoneNum] = useState({});
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const data = await getUserById(userId);
+        setUser(data);
+        setAddressData(data.address || {}); // Ensure address is an object
+        setTelephoneNum(data.phoneNo || "");
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   const fields = [
-    { label: "HouseNo", name: "house_no" },
+    { label: "HouseNo", name: "houseNo" },
     { label: "Street", name: "street" },
     { label: "City", name: "city" },
     { label: "District", name: "district" },
-    { label: "Postal Code", name: "postal_code" },
+    { label: "Province", name: "province" },
+    { label: "Postal Code", name: "postalCode" },
   ];
+  // console.log("field", user.address.city)
+  console.log("userID", userId);
+  console.log("user", user);
+  console.log("address", addressData);
 
-  const handleChange = (e) => {
+  console.log("tel", telephoneNum);
+  const handleAddressChange = (e) => {
     const { name, value } = e.target;
     console.log(`Changing field ${name} to value: ${value}`);
-    setFormData((prev) => ({
+    setAddressData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  console.log("Current form data:", formData);
+  const handleTeleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(`Changing field ${name} to value: ${value}`);
+    setTelephoneNum((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  console.log("Current formmmm data:", addressData);
   console.log("Current State:", editMode);
 
   const handleEditClick = () => {
     setEditMode(!editMode);
   };
   const handleCancel = () => {
-    setFormData({
-      house_no: user.house_no || "",
-      street: user.street || "",
-      city: user.city || "",
-      district: user.district || "",
-      postal_code: user.postal_code || "",
-      phone_no: user.phone_no || "",
-    });
+    setAddressData(user.address);
     setEditMode(false); // Switch back to view mode
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted with data:", formData);
-    // setEditMode(false);
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    console.log("Form submitted with data:", addressData);
+    console.log("Form submitted with data:", telephoneNum);
 
-    // Example validation
-    if (!formData.phone_no.match(/^\d{10}$/)) {
-      alert("Please enter a valid 10-digit telephone number.");
-      return;
+    // setAddressData(user.address);
+
+    try {
+      const updatedUser = await updateUserAddress(userId, addressData);
+      console.log("Address updated successfully:", updatedUser);
+      setEditMode(false);
+      alert("Details updated successfully!");
+      setAddressData(user.address);
+    } catch (error) {
+      console.error("Failed to update address:", error);
     }
-
-    // Example API call (pseudo-code)
-    // fetch('/api/updateUser', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData),
-    // }).then(response => console.log(response));
-    setEditMode(false);
-    alert("Details updated successfully!"); // Notify the user of success
   };
 
-  console.log(formData.house_no);
+  // console.log(addressData.houseNo);
   return (
     <div>
       <Box
@@ -95,7 +128,12 @@ const UserInfoCompo = () => {
           <Grid2
             container
             spacing={3}
-            sx={{display: 'flex', alignItems: "center", height: "100%", justifyContent: 'center' }} // Removed display: flex
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              height: "100%",
+              justifyContent: "center",
+            }} // Removed display: flex
           >
             <Grid2 size={{ lg: 7 }} sx={{}}>
               <PlainBox
@@ -144,7 +182,7 @@ const UserInfoCompo = () => {
                         {user.email}
                       </Typography>
                     </Typography>
-                  <Divider sx={{ width: "100%" }} />
+                    <Divider sx={{ width: "100%" }} />
 
                     <Typography
                       variant="primePara1"
@@ -153,7 +191,7 @@ const UserInfoCompo = () => {
                       Address:
                     </Typography>
 
-                    {fields.map((field) =>
+                    {user && addressData && fields.map((field) =>
                       !editMode ? (
                         <Box sx={{ py: "2px" }}>
                           <Stack
@@ -177,13 +215,15 @@ const UserInfoCompo = () => {
                               variant="primePara1"
                               component="span"
                               sx={{
-                                color: user[field.name]
+                                color: user.address[field.name]
                                   ? "primary.lighter"
                                   : "error.light",
                                 pl: "10px",
                               }}
                             >
-                              {user[field.name] ? user[field.name] : "No Data"}
+                              {user.address[field.name]
+                                ? user.address[field.name]
+                                : "No Data"}
                             </Typography>
                           </Stack>
                         </Box>
@@ -191,14 +231,15 @@ const UserInfoCompo = () => {
                         <FormTextField
                           key={field.name}
                           label={field.label}
+                          type={field.name === "postalCode" ? "number" : "text"}
                           name={field.name}
-                          value={formData[field.name]}
-                          defaultValue={formData[field.name]}
-                          onChange={handleChange}
+                          value={user.address[field.name]}
+                          defaultValue={user.address[field.name]}
+                          onChange={handleAddressChange}
                         />
                       )
                     )}
-                  <Divider sx={{ width: "100%" }} />
+                    <Divider sx={{ width: "100%" }} />
 
                     {!editMode ? (
                       <Typography
@@ -211,13 +252,13 @@ const UserInfoCompo = () => {
                           component="span"
                           fontSize={14}
                           sx={{
-                            color: user.phone_no
+                            color: user.phoneNo
                               ? "primary.lighter"
                               : "error.light",
                             pl: "10px",
                           }}
                         >
-                          {user.phone_no ? user.phone_no : "No Data"}
+                          {user.phoneNo ? user.phoneNo : "No Data"}
                         </Typography>
                       </Typography>
                     ) : (
@@ -230,10 +271,10 @@ const UserInfoCompo = () => {
                         </Typography>
                         <FormTextField
                           label=""
-                          name="telephone"
-                          value={formData.phone_no}
-                          defaultValue={formData.phone_no}
-                          onChange={handleChange}
+                          name="phoneNo"
+                          value={user.phoneNo}
+                          defaultValue={user.phoneNo}
+                          onChange={handleTeleChange}
                           type="tel"
                           placeholder="Enter your phone number"
                           inputProps={{
@@ -246,52 +287,51 @@ const UserInfoCompo = () => {
                   </Stack>
                   <Divider sx={{ width: "100%" }} />
 
-                    <Box
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "end",
-                      }}
-                    >
-                      {!editMode ? (
-                        <BlackButton
-                          text="Edit Details"
-                          // type={editMode ? "submit" : "button"} // Only allow "submit" when in edit mode
-                          onClick={handleEditClick} // Only trigger handleEditClick for "Edit Details"
+                  <Box
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "end",
+                    }}
+                  >
+                    {!editMode ? (
+                      <BlackButton
+                        text="Edit Details"
+                        // type={editMode ? "submit" : "button"} // Only allow "submit" when in edit mode
+                        onClick={handleEditClick} // Only trigger handleEditClick for "Edit Details"
+                        sx={{
+                          minWidth: "90px",
+                          m: "12px 10px 0 0",
+                          height: "43px",
+                        }}
+                      />
+                    ) : (
+                      <>
+                        <OutlinedBlackButton
+                          text="Cancel"
+                          type="button"
+                          onClick={handleCancel}
                           sx={{
                             minWidth: "90px",
                             m: "12px 10px 0 0",
                             height: "43px",
+                            mr: 1,
                           }}
                         />
-                      ) : (
-                        <>
-                          <OutlinedBlackButton
-                            text="Cancel"
-                            type="button"
-                            onClick={handleCancel}
-                            sx={{
-                              minWidth: "90px",
-                              m: "12px 10px 0 0",
-                              height: "43px",
-                              mr: 1,
-                            }}
-                          />
-                          <BlackButton
-                            text="Submit"
-                            // type="button"
-                            onClick={handleSubmit}
-                            sx={{
-                              minWidth: "90px",
-                              m: "12px 10px 0 0",
-                              height: "43px",
-                              mr: 2,
-                            }}
-                          />
-                        </>
-                      )}
-                    </Box>
-                  
+                        <BlackButton
+                          text="Submit"
+                          // type="button"
+                          onClick={handleSubmit}
+                          sx={{
+                            minWidth: "90px",
+                            m: "12px 10px 0 0",
+                            height: "43px",
+                            mr: 2,
+                          }}
+                        />
+                      </>
+                    )}
+                  </Box>
                 </Stack>
               </PlainBox>
             </Grid2>
