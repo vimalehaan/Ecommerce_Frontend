@@ -58,7 +58,7 @@ const ShippingPage = () => {
   const subtotal =
     filteredProducts && filteredProducts.length > 0
       ? filteredProducts.reduce(
-          (acc, product) => acc + product.productPrice * product.quantity,
+          (acc, product) => acc + product.productPrice * 1,
           0
         )
       : 0;
@@ -129,7 +129,7 @@ const ShippingPage = () => {
                         key={product.productId}
                         image={product.productImg[0]}
                         title={product.productName}
-                        quantity={product.quantity}
+                        quantity={1}
                         price={product.productPrice}
                       />
                     ))
